@@ -1,12 +1,64 @@
-# React + Vite
+# Proyecto Telesecundaria
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Cómo ejecutar el proyecto
 
-Currently, two official plugins are available:
+### 1. Clonar el repositorio
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+git clone <URL_DEL_REPOSITORIO>
+cd Proyecto_Telesecundaria
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 2. Backend
+
+1. Entrar a la carpeta del backend:
+
+cd Backend
+
+2. Instalar dependencias:
+
+npm install
+
+> Esto instalará todas las librerías necesarias para Node.js, Express y Sequelize (incluyendo `mysql2` para conectarse a MySQL).
+
+3. Ejecutar el backend:
+
+node index.js
+
+> Esto iniciará el servidor y sincronizará los modelos con la base de datos existente.
+
+---
+
+### 3. Frontend
+
+1. Entrar a la carpeta del frontend:
+
+cd ../frontend
+
+2. Instalar dependencias:
+
+npm install
+
+> Esto instalará todas las librerías necesarias para React.
+
+3. Iniciar el frontend:
+
+npm start
+
+> El proyecto se abrirá en el navegador (por defecto http://localhost:3000) y estará conectado al backend.
+
+---
+
+### 4. Requisitos
+
+- Node.js instalado
+- npm o yarn
+- MySQL o XAMPP corriendo con la base de datos ya disponible
+
+---
+
+### 5. Notas importantes
+
+- Cada vez que agregues un nuevo modelo en el backend, ejecuta `node index.js` para que Sequelize actualice las tablas automáticamente.
+- Nunca subas `node_modules` ni la carpeta `frontend/build` al repositorio.
+- Asegúrate de configurar correctamente los archivos `.env` si los usas para las credenciales de la base de datos.
