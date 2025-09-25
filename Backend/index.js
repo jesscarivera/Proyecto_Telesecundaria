@@ -4,6 +4,7 @@ const PORT = 3000;
 const sequelize = require('./db');           // conexión a MySQL
 require('./src/Models/Alumnos'); 
 require('./src/Models/Biblioteca')
+require('./src/Models/Usuarios')
 
 app.use(express.json());
 
