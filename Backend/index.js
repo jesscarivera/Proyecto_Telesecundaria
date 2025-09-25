@@ -1,12 +1,17 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const sequelize = require('./db');           // conexión a MySQL
+const sequelize = require('./db');     
+const userRoutes = require('./src/Routes/userRoutes');  
+const authRoutes = require('./src/Routes/authRoutes');
 require('./src/Models/Alumnos'); 
 require('./src/Models/Biblioteca')
 require('./src/Models/Usuarios')
 
 app.use(express.json());
+
+app.use('/api/usuarios', userRoutes);
+app.use('/api', authRoutes); 
 
 app.get('/', (req, res) => {
   res.send('Servidor funcionando');

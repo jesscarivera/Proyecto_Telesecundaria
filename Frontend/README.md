@@ -21,6 +21,10 @@ npm install
 
 > Esto instalará todas las librerías necesarias para Node.js, Express y Sequelize (incluyendo `mysql2` para conectarse a MySQL).
 
+npm install bcrypt
+ 
+ > Descarga e instala el paquete bcrypt, esta es una librería de Node.js que sirve para encriptar contraseñas de forma segura.
+
 3. Ejecutar el backend:
 
 node index.js
