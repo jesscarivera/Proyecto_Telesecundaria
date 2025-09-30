@@ -1,29 +1,29 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const Alumno = sequelize.define('Estudiante', {
-  nombre: {
+const Student = sequelize.define('Estudiante', {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  apellidos: {
+  Last_Name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  matricula: {
+   enrollment: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
   },
-  edad: {
+  age: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  grado: {
+  grade: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  grupo: {
+  group: {
     type: DataTypes.STRING,
     allowNull: false
   }
@@ -32,4 +32,4 @@ const Alumno = sequelize.define('Estudiante', {
   timestamps: true
 });
 
-module.exports = Alumno;
+module.exports = Student;
