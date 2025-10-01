@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const Student = sequelize.define('Estudiante', {
+const Student = sequelize.define('Students', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -28,7 +28,7 @@ const Student = sequelize.define('Estudiante', {
     allowNull: false
   }
 }, {
-  tableName: 'alumnos',
+  tableName: 'Students',
   timestamps: true
 });
 

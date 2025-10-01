@@ -4,16 +4,20 @@ const PORT = 3000;
 const sequelize = require('./db');     
 const userRoutes = require('./src/Routes/userRoutes');  
 const authRoutes = require('./src/Routes/authRoutes');
-const studentRoutes = require('./src/Routes/studentsRoutes')
+const studentRoutes = require('./src/Routes/studentsRoutes');
+const LibraryRoutes = require('./src/Routes/LibraryRoutes');
 require('./src/Models/Students')
-require('./src/Models/Biblioteca')
 require('./src/Models/Usuarios')
+require('./src/Models/Library')
+require('./src/Models/Loans');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/usuarios', userRoutes);
 app.use('/api', authRoutes); 
 app.use('/api/students', studentRoutes);
+app.use('/api/library', LibraryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Servidor funcionando');

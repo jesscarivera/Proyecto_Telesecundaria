@@ -3,10 +3,10 @@ const router = express.Router();
 const StudentsController = require('../Controllers/StudentsController')
 
 // CRUD de estudiantes
-router.post('/add', StudentsController.agregarEstudiante);            // POST /api/students
-router.get('/get', StudentsController.obtenerEstudiantes);           // GET /api/students
-router.get('/get/:enrollment', StudentsController.obtenerEstudiante); // GET /api/students/ABC123
-router.put('/edit/:enrollment', StudentsController.editarEstudiante);  // PUT /api/students/ABC123
-router.delete('/delete/:enrollment', StudentsController.eliminarEstudiante); // DELETE /api/students/ABC123
+router.post('/add', StudentsController.agregarEstudiante);            
+router.get('/get', StudentsController.obtenerEstudiantes);           
+router.get('/get/:enrollment', StudentsController.obtenerEstudiante); 
+router.put('/edit/:enrollment', StudentsController.editarEstudiante);  
+router.delete('/delete/:enrollment', StudentsController.eliminarEstudiante); 
 
 module.exports = router;
