@@ -6,6 +6,7 @@ const userRoutes = require('./src/Routes/userRoutes');
 const authRoutes = require('./src/Routes/authRoutes');
 const studentRoutes = require('./src/Routes/studentsRoutes');
 const LibraryRoutes = require('./src/Routes/LibraryRoutes');
+const LoansRoutes = require('./src/Routes/LoansRoutes');
 require('./src/Models/Students')
 require('./src/Models/Usuarios')
 require('./src/Models/Library')
@@ -18,6 +19,7 @@ app.use('/api/usuarios', userRoutes);
 app.use('/api', authRoutes); 
 app.use('/api/students', studentRoutes);
 app.use('/api/library', LibraryRoutes);
+app.use('/api/loans', LoansRoutes);
 
 app.get('/', (req, res) => {
   res.send('Servidor funcionando');
