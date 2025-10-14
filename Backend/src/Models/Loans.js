@@ -23,7 +23,7 @@ const Loan = sequelize.define('Loan', {
   timestamps: true
 });
 
-// Relations
+// Relaciones
 Student.hasMany(Loan, { foreignKey: 'student_id' });
 Loan.belongsTo(Student, { foreignKey: 'student_id' });
 
