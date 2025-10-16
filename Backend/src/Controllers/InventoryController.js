@@ -6,7 +6,6 @@ const createItem = async (req, res) => {
   const { item_name, description, quantity, unit, location, category_id } = req.body;
 
   try {
-    // Verificar que la categoría exista
     const category = await Category.findByPk(category_id);
     if (!category) return res.status(404).json({ message: 'Categoría no encontrada' });
 
@@ -81,9 +80,38 @@ const deleteItem = async (req, res) => {
   }
 };
 
+//  Obtener items por categoría
+const getItemsByCategory = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const items = await InventoryItem.findAll({
+      where: { category_id: id },
+      include: {
+        model: Category,
+        as: 'category',
+        attributes: ['name', 'type']
+      }
+    });
+
+    if (!items.length) {
+      return res.status(404).json({ message: 'No se encontraron items para esta categoría' });
+    }
+
+    res.status(200).json(items);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Error al obtener los items por categoría',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createItem,
   getItems,
   updateItem,
-  deleteItem
+  deleteItem,
+  getItemsByCategory
 };
