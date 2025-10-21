@@ -9,12 +9,14 @@ const LibraryRoutes = require('./src/Routes/LibraryRoutes');
 const LoansRoutes = require('./src/Routes/LoansRoutes');
 const CategoryRoutes = require('./src/Routes/CategoryRoutes');
 const InventoryRoutes = require('./src/Routes/InventoryRoutes');
+const GroupsRoutes = require('./src/Routes/GroupsRoutes');
 require('./src/Models/Students')
 require('./src/Models/Usuarios')
 require('./src/Models/Library')
 require('./src/Models/Loans');
 require('./src/Models/Category')
 require('./src/Models/Inventory');
+require('./src/Models/Groups');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +28,7 @@ app.use('/api/library', LibraryRoutes);
 app.use('/api/loans', LoansRoutes);
 app.use('/api/categories', CategoryRoutes);
 app.use('/api/inventory', InventoryRoutes);
+app.use('/api/groups', GroupsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Servidor funcionando');
