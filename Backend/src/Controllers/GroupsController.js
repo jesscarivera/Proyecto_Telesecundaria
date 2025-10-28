@@ -3,15 +3,21 @@ const Group = require('../Models/Groups');
 // Crear grupo
 const createGroup = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, maestroId } = req.body;
 
-    // Validar si ya existe
+    // Validar datos requeridos
+    if (!name || !maestroId) {
+      return res.status(400).json({ mensaje: 'El nombre y el maestroId son obligatorios' });
+    }
+
+    // Verificar si ya existe un grupo con ese nombre
     const exists = await Group.findOne({ where: { name } });
     if (exists) {
       return res.status(400).json({ mensaje: 'El grupo ya existe' });
     }
 
-    const group = await Group.create({ name });
+    // Crear grupo
+    const group = await Group.create({ name, maestroId });
     res.status(201).json({ mensaje: 'Grupo creado correctamente', group });
   } catch (error) {
     console.error(error);
@@ -35,7 +41,9 @@ const getGroupById = async (req, res) => {
   const { id } = req.params;
   try {
     const group = await Group.findByPk(id);
-    if (!group) return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    if (!group) {
+      return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    }
     res.status(200).json(group);
   } catch (error) {
     console.error(error);
@@ -43,16 +51,23 @@ const getGroupById = async (req, res) => {
   }
 };
 
-// Actualizar grupo
+// Actualizar grupo (nombre o maestro asignado)
 const updateGroup = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, maestroId } = req.body;
 
   try {
     const group = await Group.findByPk(id);
-    if (!group) return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    if (!group) {
+      return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    }
 
-    await group.update({ name: name || group.name });
+    // Actualiza solo los campos enviados
+    await group.update({
+      name: name || group.name,
+      maestroId: maestroId || group.maestroId,
+    });
+
     res.status(200).json({ mensaje: 'Grupo actualizado correctamente', group });
   } catch (error) {
     console.error(error);
@@ -65,7 +80,9 @@ const deleteGroup = async (req, res) => {
   const { id } = req.params;
   try {
     const group = await Group.findByPk(id);
-    if (!group) return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    if (!group) {
+      return res.status(404).json({ mensaje: 'Grupo no encontrado' });
+    }
 
     await group.destroy();
     res.status(200).json({ mensaje: 'Grupo eliminado correctamente' });
@@ -80,5 +97,5 @@ module.exports = {
   getGroups,
   getGroupById,
   updateGroup,
-  deleteGroup
+  deleteGroup,
 };
