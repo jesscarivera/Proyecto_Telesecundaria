@@ -31,6 +31,11 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.ENUM('director', 'maestro'),
     allowNull: false,
     defaultValue: 'maestro'
+  },
+  estatus: {
+    type: DataTypes.ENUM('activo', 'inactivo', 'suspendido'),
+    allowNull: false,
+    defaultValue: 'activo'
   }
 }, {
   tableName: 'usuarios', 

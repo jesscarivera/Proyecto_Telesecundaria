@@ -3,7 +3,7 @@ const Category = require('../Models/Category');
 
 // Crear un nuevo item de inventario
 const createItem = async (req, res) => {
-  const { item_name, description, quantity, unit, location, category_id } = req.body;
+  const { item_name, description, quantity, unit, location, category_id, estado } = req.body;
 
   try {
     const category = await Category.findByPk(category_id);
@@ -15,7 +15,8 @@ const createItem = async (req, res) => {
       quantity,
       unit,
       location,
-      category_id
+      category_id,
+      estado: estado || 'nuevo' // por defecto 'nuevo'
     });
 
     res.status(201).json({ message: 'Item creado', item });
@@ -45,7 +46,7 @@ const getItems = async (req, res) => {
 // Actualizar un item de inventario
 const updateItem = async (req, res) => {
   const { id } = req.params;
-  const { item_name, description, quantity, unit, location, category_id } = req.body;
+  const { item_name, description, quantity, unit, location, category_id, estado } = req.body;
 
   try {
     const item = await InventoryItem.findByPk(id);
@@ -56,7 +57,16 @@ const updateItem = async (req, res) => {
       if (!category) return res.status(404).json({ message: 'Categoría no encontrada' });
     }
 
-    await item.update({ item_name, description, quantity, unit, location, category_id });
+    await item.update({
+      item_name: item_name || item.item_name,
+      description: description || item.description,
+      quantity: quantity !== undefined ? quantity : item.quantity,
+      unit: unit || item.unit,
+      location: location || item.location,
+      category_id: category_id || item.category_id,
+      estado: estado || item.estado
+    });
+
     res.status(200).json({ message: 'Item actualizado', item });
   } catch (error) {
     console.error(error);
@@ -80,7 +90,7 @@ const deleteItem = async (req, res) => {
   }
 };
 
-//  Obtener items por categoría
+// Obtener items por categoría
 const getItemsByCategory = async (req, res) => {
   const { id } = req.params;
 

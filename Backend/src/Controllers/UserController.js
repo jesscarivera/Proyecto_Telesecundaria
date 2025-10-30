@@ -3,7 +3,7 @@ const Usuario = require('../Models/Usuarios');
 
 // Crear Usuario
 const agregarUsuario = async (req, res) => {
-  const { nombre, apellido, correo, contraseña, rol } = req.body;
+  const { nombre, apellido, correo, contraseña, rol, estatus } = req.body;
 
   try {
     const existe = await Usuario.findOne({ where: { correo } });
@@ -18,7 +18,8 @@ const agregarUsuario = async (req, res) => {
       apellido,
       correo,
       contraseña: hash,
-      rol
+      rol,
+      estatus: estatus || 'activo' // por defecto activo
     });
 
     res.status(201).json({
@@ -28,7 +29,8 @@ const agregarUsuario = async (req, res) => {
         nombre: usuario.nombre,
         apellido: usuario.apellido,
         correo: usuario.correo,
-        rol: usuario.rol
+        rol: usuario.rol,
+        estatus: usuario.estatus
       }
     });
 
@@ -42,7 +44,7 @@ const agregarUsuario = async (req, res) => {
 const obtenerUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({
-      attributes: ['id', 'nombre', 'apellido', 'correo', 'rol', 'createdAt']
+      attributes: ['id', 'nombre', 'apellido', 'correo', 'rol', 'estatus', 'createdAt']
     });
 
     res.status(200).json(usuarios);
@@ -58,7 +60,7 @@ const obtenerUsuario = async (req, res) => {
 
   try {
     const usuario = await Usuario.findByPk(id, {
-      attributes: ['id', 'nombre', 'apellido', 'correo', 'rol', 'createdAt']
+      attributes: ['id', 'nombre', 'apellido', 'correo', 'rol', 'estatus', 'createdAt']
     });
 
     if (!usuario) {
@@ -75,7 +77,7 @@ const obtenerUsuario = async (req, res) => {
 // Editar Usuario
 const editarUsuario = async (req, res) => {
   const { id } = req.params;
-  const { nombre, apellido, correo, contraseña, rol } = req.body;
+  const { nombre, apellido, correo, contraseña, rol, estatus } = req.body;
 
   try {
     const usuario = await Usuario.findByPk(id);
@@ -94,7 +96,8 @@ const editarUsuario = async (req, res) => {
       apellido: apellido || usuario.apellido,
       correo: correo || usuario.correo,
       contraseña: nuevaContraseña,
-      rol: rol || usuario.rol
+      rol: rol || usuario.rol,
+      estatus: estatus || usuario.estatus
     });
 
     res.status(200).json({
@@ -104,7 +107,8 @@ const editarUsuario = async (req, res) => {
         nombre: usuario.nombre,
         apellido: usuario.apellido,
         correo: usuario.correo,
-        rol: usuario.rol
+        rol: usuario.rol,
+        estatus: usuario.estatus
       }
     });
 

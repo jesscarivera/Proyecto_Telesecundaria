@@ -35,6 +35,12 @@ const InventoryItem = sequelize.define('InventoryItem', {
     allowNull: true,
     comment: 'Ubicación dentro de la escuela',
   },
+  estado: {
+    type: DataTypes.ENUM('nuevo', 'buen estado', 'mal estado'),
+    allowNull: false,
+    defaultValue: 'nuevo',
+    comment: 'Estado del artículo',
+  }
 }, {
   tableName: 'inventory_items',
   timestamps: true,
