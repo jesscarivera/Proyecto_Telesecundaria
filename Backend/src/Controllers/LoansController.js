@@ -2,30 +2,30 @@ const Loan = require('../Models/Loans');
 const Student = require('../Models/Students');
 const Book = require('../Models/Library');
 
-// Create a new loan
+// Crear un nuevo préstamo
 const createLoan = async (req, res) => {
   const { student_id, book_id } = req.body;
 
   try {
-    // Optionally: check if the book has available copies
+    // Opcional: verificar si el libro tiene copias disponibles
     const book = await Book.findByPk(book_id);
-    if (!book) return res.status(404).json({ message: 'Book not found' });
-    if (book.copies_availables <= 0) return res.status(400).json({ message: 'No copies available' });
+    if (!book) return res.status(404).json({ message: 'Libro no encontrado' });
+    if (book.copies_availables <= 0) return res.status(400).json({ message: 'No hay copias disponibles' });
 
-    // Create loan
+    // Crear préstamo
     const loan = await Loan.create({ student_id, book_id });
 
-    // Reduce available copies
+    // Reducir el número de copias disponibles
     await book.update({ copies_availables: book.copies_availables - 1 });
 
-    res.status(201).json({ message: 'Loan created', loan });
+    res.status(201).json({ message: 'Préstamo creado', loan });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error creating loan', error: error.message });
+    res.status(500).json({ message: 'Error al crear el préstamo', error: error.message });
   }
 };
 
-// Get all loans
+// Obtener todos los préstamos
 const getLoans = async (req, res) => {
   try {
     const loans = await Loan.findAll({
@@ -37,28 +37,28 @@ const getLoans = async (req, res) => {
     res.status(200).json(loans);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error fetching loans', error: error.message });
+    res.status(500).json({ message: 'Error al obtener los préstamos', error: error.message });
   }
 };
 
-// Return a loan (update status)
+// Devolver un préstamo (actualizar estado)
 const returnLoan = async (req, res) => {
   const { id } = req.params;
 
   try {
     const loan = await Loan.findByPk(id, { include: Book });
-    if (!loan) return res.status(404).json({ message: 'Loan not found' });
-    if (loan.status === 'returned') return res.status(400).json({ message: 'Loan already returned' });
+    if (!loan) return res.status(404).json({ message: 'Préstamo no encontrado' });
+    if (loan.status === 'returned') return res.status(400).json({ message: 'El préstamo ya fue devuelto' });
 
     await loan.update({ status: 'returned', return_date: new Date() });
 
-    // Increase available copies
+    // Aumentar las copias disponibles del libro
     await loan.Book.update({ copies_availables: loan.Book.copies_availables + 1 });
 
-    res.status(200).json({ message: 'Book returned', loan });
+    res.status(200).json({ message: 'Libro devuelto', loan });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error returning loan', error: error.message });
+    res.status(500).json({ message: 'Error al devolver el préstamo', error: error.message });
   }
 };
 
