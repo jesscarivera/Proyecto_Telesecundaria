@@ -1,39 +1,47 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../components/Login.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const navigate = useNavigate();
 
+  // ----- Slider automático -----
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev === 0 ? 1 : 0));
-    }, 3000); // 3 segundos
-
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
+  // ----- Acción al iniciar sesión -----
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
+  };
+
   return (
     <main className="login-container">
-
+      
       {/* ------ IZQUIERDA: Slider de Imagen ------ */}
-        <section className="login-left slider-container">
+      <section className="login-left slider-container">
         <img
-            src="/log1.png"
-            alt="Estudiantes en laboratorio de cómputo - 1"
-            className={`login-image slider-image ${currentImage === 0 ? "active" : ""}`}
+          src="/log1.png"
+          alt="Imagen 1"
+          className={`login-image slider-image ${currentImage === 0 ? "active" : ""}`}
         />
         <img
-            src="/log2.png"
-            alt="Estudiantes en laboratorio de cómputo - 2"
-            className={`login-image slider-image ${currentImage === 1 ? "active" : ""}`}
+          src="/log2.png"
+          alt="Imagen 2"
+          className={`login-image slider-image ${currentImage === 1 ? "active" : ""}`}
         />
-        </section>
+      </section>
 
       {/* ------ DERECHA: Formulario ------ */}
       <section className="login-right">
 
-        {/* Logos institucionales */}
+        {/* Logos */}
         <header className="login-logos">
           <img src="/dgogob.png" alt="Gobierno de Durango" className="logo-durango" />
           <img src="/setelLog.png" alt="SETEL Durango" className="logo-setel" />
@@ -43,7 +51,8 @@ const Login = () => {
           Bienvenido a<br />Telesecundaria No. 531
         </h1>
 
-        <form className="login-form">
+        {/* FORMULARIO */}
+        <form className="login-form" onSubmit={handleLogin}>
           <label htmlFor="email" className="login-label">Correo</label>
           <input
             id="email"
@@ -51,10 +60,12 @@ const Login = () => {
             placeholder="Ingresa tu correo"
             className="login-input"
             autoComplete="email"
+            required
           />
 
           <label htmlFor="password" className="login-label">Contraseña</label>
 
+          {/* Campo contraseña con icono */}
           <div className="password-area">
             <input
               id="password"
@@ -62,6 +73,7 @@ const Login = () => {
               placeholder="Ingresa tu contraseña"
               className="login-input password-input"
               autoComplete="current-password"
+              required
             />
 
             <span
@@ -86,9 +98,7 @@ const Login = () => {
             </span>
           </div>
 
-          <button type="submit" className="login-button">
-            Iniciar Sesión
-          </button>
+          <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
       </section>
     </main>

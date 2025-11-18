@@ -1,0 +1,237 @@
+/* ======== PALETA DE COLORES ======== */
+:root {
+  --color-primary: #dc2626;
+  --color-primary-dark: #b91c1c;
+  --color-bg: #e5e7eb;
+  --color-card: #f3f4f6;
+  color: #3b3b3b;
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-hover: #f2f2f2;
+}
+
+/* ======== GENERALES ======== */
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  font-family: "Inter", sans-serif;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ======== SIDEBAR ======== */
+.sidebar {
+  width: 200px;
+  background: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar img {
+  width: 100%;
+  padding: 10px;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: 0.2s;
+  font-size: 15px;
+}
+
+.sidebar nav a:hover {
+  background: var(--color-hover);
+}
+
+.sidebar nav a.active {
+  background: var(--color-primary);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar nav a svg {
+  margin-right: 10px;
+}
+
+.sidebar-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+/* ======== CONTENIDO PRINCIPAL ======== */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* ENCABEZADO CON LOGOS */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header-logo {
+  width: 140px;
+}
+
+/* TÍTULO PRINCIPAL */
+.title-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title-header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.title-header .subtitle {
+  font-size: 20px;
+  color: var(--color-text-light);
+}
+
+/* ======== TARJETAS ======== */
+.card {
+  background: var(--color-card);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+  margin: 0 0 15px;
+  color: var(--color-text);
+}
+
+/* GRID */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+/* ======== CALENDARIO ======== */
+.calendar-container {
+  background: var(--color-card);
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.calendar-row {
+  display: flex;
+  gap: 18px;
+}
+
+.calendar-month {
+  width: 200px;
+}
+
+.calendar-month .header {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.calendar-month .days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 10px;
+  color: var(--color-text-light);
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.calendar-month .days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.calendar-day.weekend {
+  color: #94a3b8;
+}
+
+.calendar-day:hover {
+  background: #d1d5db;
+}
+
+.calendar-day.highlight {
+  background: var(--color-primary);
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-day.disabled {
+  color: #ccc;
+}
+
+/* ======== AVISOS ======== */
+.calendar-side-card {
+  background: var(--color-card);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+.notices-box {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.notices-box .title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.notices-card {
+  background: var(--color-card);
+  padding: 25px;
+  border-radius: 16px;
+}
+
+.notices-card ul {
+  margin-left: 20px;
+  font-size: 16px;
+}
