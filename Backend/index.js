@@ -23,6 +23,14 @@ require('./src/Models/Events');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true
+}));
+
 app.use('/api/usuarios', userRoutes);
 app.use('/api', authRoutes); 
 app.use('/api/students', studentRoutes);

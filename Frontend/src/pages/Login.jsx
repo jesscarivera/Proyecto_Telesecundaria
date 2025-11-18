@@ -5,6 +5,10 @@ import "../components/Login.css";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [correo, setCorreo] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [mensaje, setMensaje] = useState("");
+
   const navigate = useNavigate();
 
   // ----- Slider automático -----
@@ -16,9 +20,35 @@ const Login = () => {
   }, []);
 
   // ----- Acción al iniciar sesión -----
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+
+    try {
+      const respuesta = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, contraseña }),
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        setMensaje(data.mensaje);
+        return;
+      }
+
+      setMensaje("Ingreso exitoso ✓");
+
+      // Guardar usuario en localStorage
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+      // Redirigir
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error(error);
+      setMensaje("Error de conexión con el servidor");
+    }
   };
 
   return (
@@ -59,7 +89,8 @@ const Login = () => {
             type="email"
             placeholder="Ingresa tu correo"
             className="login-input"
-            autoComplete="email"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
             required
           />
 
@@ -72,7 +103,8 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               placeholder="Ingresa tu contraseña"
               className="login-input password-input"
-              autoComplete="current-password"
+              value={contraseña}
+              onChange={(e) => setContraseña(e.target.value)}
               required
             />
 
@@ -99,6 +131,8 @@ const Login = () => {
           </div>
 
           <button type="submit" className="login-button">Iniciar Sesión</button>
+
+          {mensaje && <p>{mensaje}</p>}
         </form>
       </section>
     </main>
