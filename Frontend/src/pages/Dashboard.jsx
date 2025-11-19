@@ -1,19 +1,21 @@
 import React from "react";
 import "../components/Dashboard.css"; 
 import { Home, ClipboardList, Book, Users, Settings, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // --- Datos ---
 const sidebarItems = [
-  { icon: Home, label: "Inicio", active: true },
-  { icon: ClipboardList, label: "Inventario", active: false },
-  { icon: Book, label: "Biblioteca", active: false },
-  { icon: Users, label: "Alumnos", active: false },
+  { icon: Home, label: "Inicio", path: "/" },
+  { icon: ClipboardList, label: "Inventario", path: "/inventario" },
+  { icon: Book, label: "Biblioteca", path: "/biblioteca" },
+  { icon: Users, label: "Alumnos", path: "/alumnos" },
 ];
 
 const bottomSidebarItems = [
-  { icon: Settings, label: "Configuración", active: false },
-  { icon: LogOut, label: "Salir", active: false },
+  { icon: Settings, label: "Configuración", path: "/configuracion" },
+  { icon: LogOut, label: "Salir", path: "/logout" },
 ];
+
 
 const attendanceData = [
   { month: "Ene", percentage: 20 },
@@ -51,21 +53,26 @@ const Sidebar = () => (
 
     <nav className="sidebar-menu">
       {sidebarItems.map((item) => (
-        <a key={item.label} className={`sidebar-item ${item.active ? "active" : ""}`}>
+        <Link
+          key={item.label}
+          to={item.path}
+          className={`sidebar-item ${item.active ? "active" : ""}`}
+        >
           <item.icon size={18} className="icon" /> {item.label}
-        </a>
+        </Link>
       ))}
     </nav>
 
     <nav className="sidebar-bottom">
       {bottomSidebarItems.map((item) => (
-        <a key={item.label} className="sidebar-item">
+        <Link key={item.label} to={item.path} className="sidebar-item">
           <item.icon size={18} className="icon" /> {item.label}
-        </a>
+        </Link>
       ))}
     </nav>
   </div>
 );
+
 
 // ================= CARD =================
 const StatCard = ({ title, children }) => (
