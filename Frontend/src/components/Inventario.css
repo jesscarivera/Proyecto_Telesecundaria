@@ -1,0 +1,101 @@
+/* ========== INVENTARIO ========== */
+.inventory-section {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.inv-header h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.inv-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: white;
+  width: 50%;
+}
+
+.search-box input {
+  border: none;
+  width: 100%;
+  outline: none;
+  margin-left: 6px;
+}
+
+.btn-search {
+  background: #d10000;
+  color: white;
+  border: none;
+  padding: 7px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.inv-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.inv-filter select {
+  padding: 7px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+}
+
+.btn-add {
+  background: #1d1aff;
+  color: white;
+  border: none;
+  padding: 7px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.inv-table th {
+  background: #f6f6f6;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.inv-table td {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.actions svg {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.actions .view { color: #006eff; }
+.actions .edit { color: #00bb1a; }
+.actions .delete { color: #ff0000; }
