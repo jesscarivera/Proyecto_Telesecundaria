@@ -1,0 +1,58 @@
+.formulario {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario h2 {
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #333;
+  font-weight: 600;
+}
+
+.campo, .campo-doble > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label,
+.campo-doble label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+.campo input, .campo select,
+.campo-doble input, .campo-doble select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.campo-doble {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-guardar {
+  background: #2b16b3;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.btn-guardar:hover {
+  background: #1e0f7c;
+}
