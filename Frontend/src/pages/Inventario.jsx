@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "../components/Inventario.css";
-import { Home, ClipboardList, Book, Users, Settings, LogOut, Eye, Pencil, Trash2, PlusCircle, Search } from "lucide-react";
+import { 
+  Home, ClipboardList, Book, Users, Settings, LogOut, 
+  Eye, Pencil, Trash2, PlusCircle, Search, X 
+} from "lucide-react";
 
 // === Sidebar Items ===
 const sidebarItems = [
@@ -51,6 +54,19 @@ const Sidebar = () => (
 
 // === Inventario Principal ===
 const Inventory = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [modalType, setModalType] = useState(null);
+
+  const openModal = (type, item) => {
+    setModalType(type);
+    setSelectedItem(item);
+  };
+
+  const closeModal = () => {
+    setModalType(null);
+    setSelectedItem(null);
+  };
+
   return (
     <div className="app-container">
       <Sidebar />
@@ -121,9 +137,9 @@ const Inventory = () => {
                   <td>{item.status}</td>
                   <td>{item.quantity}</td>
                   <td className="actions">
-                    <Eye className="view" size={18} />
-                    <Pencil className="edit" size={18} />
-                    <Trash2 className="delete" size={18} />
+                    <Eye className="view" size={18} onClick={() => openModal("view", item)} />
+                    <Pencil className="edit" size={18} onClick={() => openModal("edit", item)} />
+                    <Trash2 className="delete" size={18} onClick={() => openModal("delete", item)} />
                   </td>
                 </tr>
               ))}
@@ -132,6 +148,56 @@ const Inventory = () => {
 
         </section>
       </main>
+
+      {/* ========== MODALES ========== */}
+      {modalType && selectedItem && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              <X size={20} />
+            </button>
+
+            {/* === Ver === */}
+            {modalType === "view" && (
+              <>
+                <h3>📌 Detalles del Elemento</h3>
+                <p><b>Nombre:</b> {selectedItem.name}</p>
+                <p><b>Categoría:</b> {selectedItem.category}</p>
+                <p><b>Estado:</b> {selectedItem.status}</p>
+                <p><b>Cantidad:</b> {selectedItem.quantity}</p>
+              </>
+            )}
+
+            {/* === Editar === */}
+            {modalType === "edit" && (
+              <>
+                <h3>✏️ Editar Elemento</h3>
+                <form className="modal-form">
+                  <label>Nombre</label>
+                  <input type="text" defaultValue={selectedItem.name} />
+                  <label>Categoría</label>
+                  <input type="text" defaultValue={selectedItem.category} />
+                  <label>Estado</label>
+                  <input type="text" defaultValue={selectedItem.status} />
+                  <label>Cantidad</label>
+                  <input type="number" defaultValue={selectedItem.quantity} />
+                  <button className="btn-save">Guardar Cambios</button>
+                </form>
+              </>
+            )}
+
+            {/* === Eliminar === */}
+            {modalType === "delete" && (
+              <>
+                <h3>⚠️ ¿Eliminar?</h3>
+                <p>¿Deseas eliminar <b>{selectedItem.name}</b> del inventario?</p>
+                <button className="btn-delete-confirm">Sí, eliminar</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
