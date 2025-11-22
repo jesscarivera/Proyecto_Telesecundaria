@@ -1,23 +1,38 @@
 /* ========== INVENTARIO ========== */
 .inventory-section {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 10px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+
+  /* NUEVO — hace el rectángulo más grande */
+  width: 95%;        
+  max-width: 1400px; 
+  margin: 20px auto; /* centra horizontalmente */
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
+
+/* TÍTULO */
 .inv-header h2 {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
-  margin-bottom: 10px;
+  text-align: center; /* centrado */
+  margin-bottom: 20px;
 }
 
+
+/* ACCIONES */
 .inv-actions {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  justify-content: space-between; /* separa barra de búsqueda y botón */
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
+
+/* BUSCADOR */
 .search-box {
   display: flex;
   align-items: center;
@@ -25,7 +40,7 @@
   padding: 6px 10px;
   border-radius: 6px;
   background: white;
-  width: 50%;
+  width: 55%;
 }
 
 .search-box input {
@@ -39,17 +54,20 @@
   background: #d10000;
   color: white;
   border: none;
-  padding: 7px 15px;
+  padding: 7px 20px;
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
 }
 
+
+/* FILTRO + BOTÓN AGREGAR */
 .inv-filter {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .inv-filter select {
@@ -62,7 +80,7 @@
   background: #1d1aff;
   color: white;
   border: none;
-  padding: 7px 12px;
+  padding: 9px 14px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -71,26 +89,30 @@
   cursor: pointer;
 }
 
+
+/* TABLA */
 .inv-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
 .inv-table th {
   background: #f6f6f6;
-  padding: 10px;
+  padding: 12px;
   text-align: left;
   font-weight: bold;
 }
 
 .inv-table td {
-  padding: 10px;
+  padding: 12px;
   border-top: 1px solid #ddd;
 }
 
+
+/* ICONOS */
 .actions svg {
   cursor: pointer;
   margin-right: 10px;

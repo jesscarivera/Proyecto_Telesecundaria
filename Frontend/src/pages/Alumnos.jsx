@@ -1,6 +1,6 @@
 import React from "react";
 import { Search, Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
-import "./Alumnos.css";
+import "../components/Alumnos.css";
 
 const Alumnos = () => {
   const alumnos = [

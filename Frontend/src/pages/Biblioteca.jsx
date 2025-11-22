@@ -1,6 +1,6 @@
 import React from "react";
 import { Search, Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
-import "./Biblioteca.css";
+import "../components/Biblioteca.css";
 
 const Biblioteca = () => {
   const libros = [
