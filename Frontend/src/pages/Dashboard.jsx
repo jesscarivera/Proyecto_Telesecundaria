@@ -1,235 +1,157 @@
-import React from "react";
-import "../components/Dashboard.css"; 
-import { Home, ClipboardList, Book, Users, Settings, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Sidebar } from "../components/Sidedar";
+import { SchoolHeader } from "../components/SchoolHeader";
+import { Package, Book, AlertTriangle, CheckCircle } from "lucide-react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import "../components/Dashboard.css";
 
-// --- Datos ---
-const sidebarItems = [
-  { icon: Home, label: "Inicio", path: "/" },
-  { icon: ClipboardList, label: "Inventario", path: "/inventario" },
-  { icon: Book, label: "Biblioteca", path: "/biblioteca" },
-  { icon: Users, label: "Alumnos", path: "/alumnos" },
-];
-
-const bottomSidebarItems = [
-  { icon: Settings, label: "Configuración", path: "/configuracion" },
-  { icon: LogOut, label: "Salir", path: "/logout" },
-];
-
-
-const attendanceData = [
-  { month: "Ene", percentage: 20 },
-  { month: "Feb", percentage: 10 },
-  { month: "Mar", percentage: 20 },
-  { month: "Abr", percentage: 30 },
-  { month: "May", percentage: 5 },
-];
-
-const currentMonthData = {
-  name: "NOVIEMBRE",
-  year: 2025,
-  days: [
-    null, null, null, null, null, 1, 2,
-    3, 4, 5, 6, 7, 8, 9,
-    10, 11, 12, 13, 14, 15, 16,
-    17, 18, 19, 20, 21, 22, 23,
-    24, 25, 26, 27, 28, 29, 30,
-  ],
-  highlightedDates: [18, 19, 20, 21, 22, 29],
-};
-
-const importantNotices = [
-  "Junta de padres de familia 01/Dic/2025",
-  "Entrega de boletas el 10/Dic/2025",
-  "Mantenimiento de Sistema 01/Ene/2026",
-];
-
-// ================= SIDEBAR =================
-const Sidebar = () => (
-  <div className="sidebar">
-    <div className="sidebar-logo">
-      <img src="https://placehold.co/100x60" alt="Logo" />
+// tarjeta de estadísticas
+const StatCard = ({ title, value, icon: Icon, color, subtext }) => (
+  <div className="stat-card">
+    <div className="stat-info">
+      <p className="stat-title">{title}</p>
+      <h3 className="stat-value">{value}</h3>
+      <p className="stat-subtext">{subtext}</p>
     </div>
-
-    <nav className="sidebar-menu">
-      {sidebarItems.map((item) => (
-        <Link
-          key={item.label}
-          to={item.path}
-          className={`sidebar-item ${item.active ? "active" : ""}`}
-        >
-          <item.icon size={18} className="icon" /> {item.label}
-        </Link>
-      ))}
-    </nav>
-
-    <nav className="sidebar-bottom">
-      {bottomSidebarItems.map((item) => (
-        <Link key={item.label} to={item.path} className="sidebar-item">
-          <item.icon size={18} className="icon" /> {item.label}
-        </Link>
-      ))}
-    </nav>
+    <div className={`stat-icon ${color}`}>
+      <Icon size={28} />
+    </div>
   </div>
 );
 
+export default function Dashboard({ inventory = [], library = [], notices = [], events = [] }) {
+  const [view, setView] = useState("dashboard"); // pantalla actual
 
-// ================= CARD =================
-const StatCard = ({ title, children }) => (
-  <div className="card">
-    <h2>{title}</h2>
-    {children}
-  </div>
-);
+  // asegurar que los datos sean arrays
+  const safeInventory = Array.isArray(inventory) ? inventory : [];
+  const safeLibrary = Array.isArray(library) ? library : [];
+  const safeNotices = Array.isArray(notices) ? notices : [];
+  const safeEvents = Array.isArray(events) ? events : [];
 
-// ================= GRÁFICA =================
-const AttendanceChart = ({ data }) => {
-  const maxValue = 30;
-  const height = 180;
-  const barWidth = 30;
-  const spacing = 40;
-  const padding = 20;
+  // cálculo de estadísticas
+  const totalItems = safeInventory.reduce((acc, item) => acc + (item.quantity || 0), 0);
+  const lowStock = safeInventory.filter(i => (i.quantity || 0) < 5).length;
+  const totalBooks = safeLibrary.length;
+  const borrowedBooks = safeLibrary.filter(b => !b.available).length;
+
+  // datos para gráficas
+  const categoryData = safeInventory.reduce((acc, item) => {
+    const existing = acc.find(x => x.name === item.category);
+    if (existing) existing.value += item.quantity || 0;
+    else acc.push({ name: item.category || "Sin categoría", value: item.quantity || 0 });
+    return acc;
+  }, []);
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
+  const bookStatusData = [
+    { name: "Disponible", value: totalBooks - borrowedBooks },
+    { name: "Prestado", value: borrowedBooks }
+  ];
+
+  // últimos avisos y próximos eventos
+  const recentNotices = [...safeNotices].reverse().slice(0, 3);
+  const upcomingEvents = [...safeEvents]
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(0, 3);
 
   return (
-    <svg
-      width="100%"
-      height={height}
-      viewBox={`0 0 ${data.length * (barWidth + spacing) + padding * 2} ${height}`}
-    >
-      {data.map((item, index) => {
-        const barHeight = (item.percentage / maxValue) * (height - padding);
-        const xPos = index * (barWidth + spacing) + padding;
-        const yPos = height - barHeight - padding / 2;
+    <div className="dashboard-wrapper">
+      {/* sidebar */}
+      <Sidebar currentView={view} setView={setView} isOpen={true} onLogout={() => alert("Salir")} />
 
-        return (
-          <g key={item.month}>
-            <rect
-              x={xPos}
-              y={yPos}
-              width={barWidth}
-              height={barHeight}
-              rx="4"
-              fill="#808080"
-            />
-            <text
-              x={xPos + barWidth / 2}
-              y={height - 5}
-              fontSize="12"
-              fill="#555"
-              textAnchor="middle"
-            >
-              {item.month}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-};
+      <div className="dashboard-content">
+        {/* header */}
+        <SchoolHeader />
 
-// ================= CALENDARIO =================
-const CalendarMonth = ({ data }) => (
-  <div className="calendar-month">
-    <div className="header">
-      <span>{data.name}</span> <span>{data.year}</span>
-    </div>
+        {/* tarjetas de estadísticas */}
+        <div className="stats-grid">
+          <StatCard title="Total Artículos" value={totalItems} icon={Package} color="blue" subtext="En inventario general" />
+          <StatCard title="Stock Bajo" value={lowStock} icon={AlertTriangle} color="orange" subtext="Items con < 5 unidades" />
+          <StatCard title="Libros Total" value={totalBooks} icon={Book} color="purple" subtext="En biblioteca" />
+          <StatCard title="Préstamos Activos" value={borrowedBooks} icon={CheckCircle} color="green" subtext="Libros fuera" />
+        </div>
 
-    <div className="days-header">
-      {["D", "L", "M", "M", "J", "V", "S"].map((d, i) => (
-        <div key={i}>{d}</div>
-      ))}
-    </div>
-
-    <div className="days-grid">
-      {data.days.map((day, i) => {
-        const highlighted = data.highlightedDates.includes(day);
-        const weekend = i % 7 === 0 || i % 7 === 6;
-
-        return (
-          <div
-            key={i}
-            className={`calendar-day 
-              ${day === null ? "disabled" : ""}
-              ${highlighted ? "highlight" : ""}
-              ${weekend ? "weekend" : ""}
-            `}
-          >
-            {day}
-          </div>
-        );
-      })}
-    </div>
-  </div>
-);
-
-// ================= APP PRINCIPAL =================
-const App = () => {
-  return (
-    <div className="app-container">
-      <Sidebar />
-
-      <main className="main-content">
-
-        {/* ==== LOGOS ENCABEZADO ==== */}
-        <header className="dashboard-header">
-          <img src="/dgogob.png" alt="Gobierno de Durango" className="header-logo" />
-          <img src="/setelLog.png" alt="SETEL Durango" className="header-logo" />
-        </header>
-
-        {/* ==== TÍTULO PRINCIPAL ==== */}
-        <header className="title-header">
-          <h1>Telesecundaria No. 531</h1>
-          <p className="subtitle">Tablero</p>
-        </header>
-
-        {/* ==== TARJETAS PRINCIPALES ==== */}
-        <section className="grid-2">
-          <StatCard title="Estadísticas Rápidas">
-            <p>Total de Alumnos: <strong>100</strong></p>
-            <p>Total de Docentes: <strong>20</strong></p>
-          </StatCard>
-
-          <StatCard title="Gráfica de Asistencia">
-            <AttendanceChart data={attendanceData} />
-          </StatCard>
-        </section>
-
-        {/* ==== CALENDARIO + FIESTAS ==== */}
-        <section className="grid-3">
-          <div className="calendar-container">
-            <h2>Calendario Escolar</h2>
-            <div className="calendar-row">
-              <CalendarMonth data={{ name: "AGOSTO", year: 2025, days: Array(31).fill(0).map((_, i) => i + 1), highlightedDates: [] }} />
-              <CalendarMonth data={{ name: "SEPTIEMBRE", year: 2025, days: Array(30).fill(0).map((_, i) => i + 1), highlightedDates: [] }} />
-              <CalendarMonth data={{ name: "OCTUBRE", year: 2025, days: Array(31).fill(0).map((_, i) => i + 1), highlightedDates: [] }} />
-              <CalendarMonth data={currentMonthData} />
-            </div>
+        {/* gráficas */}
+        <div className="charts-grid">
+          <div className="chart-card">
+            <h3>Distribución por Categoría</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={categoryData}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {categoryData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
-          <div className="calendar-side-card">
-            <div className="notices-box">
-              <p className="title">FESTIVIDADES Y VACACIONES</p>
-              <ul>
-                <li>Vacaciones Invierno: 18 - 29 Dic</li>
-              </ul>
-            </div>
+          <div className="chart-card">
+            <h3>Disponibilidad Biblioteca</h3>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={bookStatusData}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
-        </section>
+        </div>
 
-        {/* ==== AVISOS IMPORTANTES ==== */}
-        <section>
+        {/* avisos y eventos */}
+        <div className="notices-events-grid">
           <div className="notices-card">
-            <h2>Avisos Importantes</h2>
-            <ul>
-              {importantNotices.map((n, i) => (
-                <li key={i}>{n}</li>
-              ))}
-            </ul>
+            <div className="card-header"><h3>Avisos Recientes</h3></div>
+            {recentNotices.length === 0 ? (
+              <p className="empty-text">No hay avisos recientes.</p>
+            ) : (
+              recentNotices.map((notice) => (
+                <div key={notice.id} className="notice-item">
+                  <div className={`notice-type ${notice.type.toLowerCase()}`}></div>
+                  <div>
+                    <h4>{notice.title}</h4>
+                    <p>{notice.content}</p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        </section>
-      </main>
+
+          <div className="events-card">
+            <div className="card-header"><h3>Próximos Eventos</h3></div>
+            {upcomingEvents.length === 0 ? (
+              <p className="empty-text">Sin eventos próximos.</p>
+            ) : (
+              upcomingEvents.map((event) => {
+                const evtDate = new Date(event.date);
+                return (
+                  <div key={event.id} className="event-item">
+                    <div className="event-date">
+                      <span>{evtDate.getDate()}</span>
+                      <small>{evtDate.toLocaleDateString("es-MX", { month: "short" }).slice(0, 3)}</small>
+                    </div>
+                    <div className="event-info">
+                      <h4>{event.title}</h4>
+                      <p>{event.time} | {event.location}</p>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default App;
+}
