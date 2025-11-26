@@ -1,6 +1,6 @@
-/* ---- Contenedor principal ---- */
+/* ---- Contenedor principal ajustado al sidebar ---- */
 .inventory-container {
-  margin-left: 260px;
+  margin-left: 260px; /* ancho de la sidebar */
   padding: 30px;
   background: #f5f6fa;
   min-height: 100vh;
@@ -13,13 +13,6 @@
   font-size: 36px;
   font-weight: 800;
   color: #2c2c2c;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.inv-icon {
-  color: #6f2cff;
 }
 
 .inv-subtitle {
@@ -28,79 +21,37 @@
   font-size: 14px;
 }
 
-/* ---- Header ---- */
+/* ---- Encabezado general ---- */
 .inv-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* ---- Tarjetas alineadas a la derecha ---- */
-.right-corner {
-  margin-left: auto;
-}
-
-/* ---- Tarjetas de resumen ---- */
-.inv-summary-boxes {
-  display: flex;
-  gap: 15px;
-}
-
-.inv-summary-card {
-  background: white;
-  padding: 14px 20px;
-  border-radius: 12px;
-  min-width: 140px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.inv-summary-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-.inv-summary-value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #2c2c2c;
-}
-
-/* ---- Óvalos para seleccionar grupo ---- */
-.grupo-oval-container {
-  display: flex;
-  gap: 10px;
-  margin-top: 25px;
-  margin-bottom: 15px;
-}
-
-.grupo-oval {
-  padding: 8px 18px;
-  border-radius: 50px;
-  background: #ececf8;
+/* ---- Botón de reporte ---- */
+.btn-report {
+  background: #ececf1;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
-  color: #6f2cff;
-  font-weight: 600;
-  border: 1px solid #dcd4ff;
-  transition: 0.2s ease;
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
 }
 
-.grupo-oval:hover {
-  background: #ded5ff;
+.btn-report:hover {
+  background: #dedee4;
 }
 
-.grupo-oval.activo {
-  background: #6f2cff;
-  color: white;
-  border-color: #6f2cff;
-}
-
-/* ---- Barra de búsqueda y botón ---- */
+/* ---- Controles (buscador, filtros, agregar) ---- */
 .inv-controls {
   display: flex;
   gap: 15px;
-  margin-top: 20px;
+  margin-top: 25px;
   background: white;
   padding: 18px;
   border-radius: 12px;
@@ -108,6 +59,7 @@
   align-items: center;
 }
 
+/* Buscador */
 .inv-search-box {
   flex: 1;
 }
@@ -120,7 +72,15 @@
   background: #fafafa;
 }
 
-/* ---- Botón “Agregar” ---- */
+/* Select */
+.inv-select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+}
+
+/* Botón agregar */
 .btn-add {
   background: linear-gradient(90deg, #6f2cff, #7e3ff2);
   color: white;
@@ -179,7 +139,7 @@
   color: #6a41e2;
 }
 
-/* ---- Acciones de la tabla ---- */
+/* ---- Botones de acción ---- */
 .inv-actions {
   display: flex;
   gap: 10px;
@@ -207,7 +167,7 @@
   color: #777;
 }
 
-/* ---- Responsive ---- */
+/* ---- Ajustes para pantallas pequeñas ---- */
 @media (max-width: 1200px) {
   .inventory-container {
     margin-left: 220px;
@@ -216,15 +176,11 @@
 
 @media (max-width: 768px) {
   .inventory-container {
-    margin-left: 0;
+    margin-left: 0; /* ya no se desplaza por la sidebar */
     padding: 20px;
   }
 
   .inv-summary-boxes {
     flex-direction: column;
-  }
-
-  .grupo-oval-container {
-    flex-wrap: wrap;
   }
 }

@@ -1,140 +1,125 @@
 import React, { useState } from "react";
-import { Search, Eye, Pencil, Trash2, PlusCircle, X } from "lucide-react";
-import "../components/Alumnos.css";
+import { GraduationCap, Pencil, Trash2, Eye, Plus } from "lucide-react";
+import "./Alumnos.css";
 
-const Alumnos = () => {
-  const alumnos = [
-    { id: 1, nombre: "Ana Sofía Castro García", grado: "1°", grupo: "A", estatus: "Activo" },
-    { id: 2, nombre: "Ricardo Gómez Fuentes", grado: "2°", grupo: "B", estatus: "Activo" },
-    { id: 3, nombre: "Luis Armando Pérez Soto", grado: "3°", grupo: "A", estatus: "Suspendido" },
-    { id: 4, nombre: "Karla Daniela Ramos Vera", grado: "1°", grupo: "B", estatus: "Dado de Baja" },
-    { id: 5, nombre: "Javier Torres Vera", grado: "2°", grupo: "A", estatus: "Activo" }
+export default function Alumnos() {
+  // Lista vacía de alumnos
+  const [alumnos] = useState([]);
+
+  // Grupo seleccionado
+  const [grupoSeleccionado, setGrupoSeleccionado] = useState("");
+
+  // Grupos mostrados en óvalos
+  const grupos = [
+    "1A", "1B", "1C",
+    "2A", "2B", "2C",
+    "3A", "3B", "3C"
   ];
 
-  const [modalType, setModalType] = useState(null);
-  const [selected, setSelected] = useState(null);
-
-  const abrirModal = (tipo, alumno) => {
-    setModalType(tipo);
-    setSelected(alumno);
-  };
-
-  const cerrarModal = () => {
-    setModalType(null);
-    setSelected(null);
-  };
+  // Filtrar alumnos por grupo
+  const alumnosFiltrados = grupoSeleccionado
+    ? alumnos.filter(a => `${a.grado}${a.grupo}` === grupoSeleccionado)
+    : alumnos;
 
   return (
-    <div className="contenedor-alumnos">
-      <h2>Alumnos</h2>
+    <div className="inventory-container">
 
-      {/* === Búsqueda y Filtros === */}
-      <div className="busqueda-filtros">
-        <div className="barra-busqueda">
-          <Search className="icono" size={18} />
-          <input type="text" placeholder="Buscar..." />
-        </div>
-        <button className="btn-buscar">Buscar</button>
-
-        <div className="filtro-grupo">
-          <label>Filtrar</label>
-          <select>
-            <option>Grupo...</option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-          </select>
+      {/* Título */}
+      <div className="inv-header">
+        <div>
+          <h1 className="inv-title">
+            <GraduationCap className="inv-icon" size={38} />
+            Alumnos
+          </h1>
+          <p className="inv-subtitle">Control general de estudiantes</p>
         </div>
 
-        <button className="btn-agregar">
-          <PlusCircle size={18} /> Agregar Nuevo Alumno
+        {/* Tarjetas del lado derecho */}
+        <div className="inv-summary-boxes right-corner">
+          <div className="inv-summary-card">
+            <p className="inv-summary-title">Total de alumnos</p>
+            <p className="inv-summary-value">{alumnos.length}</p>
+          </div>
+
+          <div className="inv-summary-card">
+            <p className="inv-summary-title">Activos</p>
+            <p className="inv-summary-value">
+              {alumnos.filter(a => a.estatus === "Activo").length}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Óvalos de grupos */}
+      <div className="grupo-oval-container">
+        {grupos.map(g => (
+          <div
+            key={g}
+            className={`grupo-oval ${grupoSeleccionado === g ? "activo" : ""}`}
+            onClick={() =>
+              setGrupoSeleccionado(grupoSeleccionado === g ? "" : g)
+            }
+          >
+            {g}
+          </div>
+        ))}
+      </div>
+
+      {/* Buscar + botón agregar */}
+      <div className="inv-controls">
+        <div className="inv-search-box">
+          <input type="text" placeholder="Buscar alumno..." />
+        </div>
+
+        <button className="btn-add">
+          <Plus size={18} /> Agregar Alumno
         </button>
       </div>
 
-      {/* === Tabla === */}
-      <table className="tabla-alumnos">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Grado</th>
-            <th>Grupo</th>
-            <th>Estatus</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {alumnos.map((a) => (
-            <tr key={a.id}>
-              <td>{a.id}</td>
-              <td>{a.nombre}</td>
-              <td>{a.grado}</td>
-              <td>{a.grupo}</td>
-              <td>{a.estatus}</td>
-              <td className="acciones">
-                <Pencil className="editar" size={18} title="Modificar" onClick={() => abrirModal("editar", a)} />
-                <Eye className="ver" size={18} title="Ver detalles" onClick={() => abrirModal("ver", a)} />
-                <Trash2 className="eliminar" size={18} title="Eliminar" onClick={() => abrirModal("eliminar", a)} />
-              </td>
+      {/* Tabla */}
+      <div className="inv-table-wrapper">
+        <table className="inv-table">
+          <thead>
+            <tr>
+              <th>Matrícula</th>
+              <th>Nombre</th>
+              <th>Grado</th>
+              <th>Grupo</th>
+              <th>Estatus</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      {/* ========== MODALES ========== */}
-      {modalType && selected && (
-        <div className="modal-overlay" onClick={cerrarModal}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-cerrar" onClick={cerrarModal}>
-              <X size={20} />
-            </button>
+          <tbody>
+            {alumnosFiltrados.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">
+                  No hay alumnos registrados
+                </td>
+              </tr>
+            ) : (
+              alumnosFiltrados.map((al) => (
+                <tr key={al.id}>
+                  <td>{al.matricula}</td>
+                  <td>{al.nombre}</td>
+                  <td>{al.grado}</td>
+                  <td>{al.grupo}</td>
+                  <td>
+                    <span className="badge">{al.estatus}</span>
+                  </td>
 
-            {/* === Ver === */}
-            {modalType === "ver" && (
-              <>
-                <h3>👁️ Detalles del Alumno</h3>
-                <p><b>Nombre:</b> {selected.nombre}</p>
-                <p><b>Grado:</b> {selected.grado}</p>
-                <p><b>Grupo:</b> {selected.grupo}</p>
-                <p><b>Estatus:</b> {selected.estatus}</p>
-              </>
+                  <td className="inv-actions">
+                    <button className="act act-edit"><Pencil size={18} /></button>
+                    <button className="act"><Eye size={18} /></button>
+                    <button className="act act-del"><Trash2 size={18} /></button>
+                  </td>
+                </tr>
+              ))
             )}
+          </tbody>
+        </table>
+      </div>
 
-            {/* === Editar === */}
-            {modalType === "editar" && (
-              <>
-                <h3>✏️ Editar Alumno</h3>
-                <form className="modal-form">
-                  <label>Nombre</label>
-                  <input type="text" defaultValue={selected.nombre} />
-
-                  <label>Grado</label>
-                  <input type="text" defaultValue={selected.grado} />
-
-                  <label>Grupo</label>
-                  <input type="text" defaultValue={selected.grupo} />
-
-                  <label>Estatus</label>
-                  <input type="text" defaultValue={selected.estatus} />
-
-                  <button className="btn-guardar">Guardar Cambios</button>
-                </form>
-              </>
-            )}
-
-            {/* === Eliminar === */}
-            {modalType === "eliminar" && (
-              <>
-                <h3>⚠️ ¿Eliminar Alumno?</h3>
-                <p>¿Desea eliminar a <b>{selected.nombre}</b> del registro?</p>
-                <button className="btn-eliminar-confirmar">Sí, eliminar</button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
-};
-
-export default Alumnos;
+}

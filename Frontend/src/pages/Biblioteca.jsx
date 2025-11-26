@@ -1,132 +1,190 @@
 import React, { useState } from "react";
-import { Search, Eye, Pencil, Trash2, PlusCircle, XCircle } from "lucide-react";
+import { Search, Eye, Pencil, Trash2, PlusCircle, XCircle, BookOpen } from "lucide-react";
 import "../components/Biblioteca.css";
 
 const Biblioteca = () => {
-  const [libros, setLibros] = useState([
-    { id: 1, titulo: "Cien años de soledad", categoria: "Novela", autor: "Gabriel García Márquez", cantidad: 3 },
-    { id: 2, titulo: "Historia de México", categoria: "Historia", autor: "Varios", cantidad: 10 },
-    { id: 3, titulo: "Álgebra y Geometría", categoria: "Libro de Texto", autor: "SEP", cantidad: 5 },
-    { id: 4, titulo: "El Principito", categoria: "Literatura", autor: "A. de St-Exupery", cantidad: 3 },
-    { id: 5, titulo: "Experimentos Químicos", categoria: "Ciencia", autor: "Dr. Eduardo Pérez", cantidad: 7 },
-  ]);
+  // lista de libros (sin datos quemados)
+  const [libros, setLibros] = useState([]);
 
-  // ---------- ESTADOS PARA MODALES ----------
+  // tipo de modal abierto
   const [modal, setModal] = useState(null); // ver | editar | eliminar | agregar
+
+  // libro seleccionado para ver/editar/eliminar
   const [seleccion, setSeleccion] = useState(null);
 
+  // abre cualquier modal y guarda el libro seleccionado
   const abrirModal = (tipo, libro = null) => {
     setSeleccion(libro);
     setModal(tipo);
   };
 
+  // cierra el modal y limpia selección
   const cerrarModal = () => {
     setSeleccion(null);
     setModal(null);
   };
 
-  // ---------- ACCIÓN ELIMINAR ----------
+  // elimina un libro
   const eliminarLibro = () => {
     setLibros(libros.filter((l) => l.id !== seleccion.id));
     cerrarModal();
   };
 
+  // totales para los recuadros
+  const totalLibros = libros.length;
+  const prestados = libros.filter((l) => l.cantidad === 0).length;
+
   return (
-    <div className="contenedor-biblioteca">
-      <h2>Biblioteca</h2>
+    <div className="inventory-container">
 
-      <div className="busqueda-filtros">
-        <div className="barra-busqueda">
-          <Search className="icono" size={18} />
-          <input type="text" placeholder="Buscar..." />
-        </div>
-        <button className="btn-buscar">Buscar</button>
-
-        <div className="filtro-categoria">
-          <label>Filtrar</label>
-          <select>
-            <option>Categoría...</option>
-            <option>Novela</option>
-            <option>Historia</option>
-            <option>Ciencia</option>
-            <option>Literatura</option>
-            <option>Libro de Texto</option>
-          </select>
+      {/* ===== HEADER PRINCIPAL ===== */}
+      <div className="inv-header">
+        <div>
+          <h1 className="inv-title">
+            {/* icono tipo biblioteca */}
+            <BookOpen size={32} style={{ marginRight: "10px", verticalAlign: "middle" }} />
+            Biblioteca Escolar
+          </h1>
+          <p className="inv-subtitle">Gestión de acervo bibliográfico y préstamos.</p>
         </div>
 
-        <button className="btn-agregar" onClick={() => abrirModal("agregar")}>
+        {/* recuadros de totales */}
+        <div className="inv-summary-boxes">
+          <div className="inv-summary-card">
+            <div className="inv-summary-title">TOTAL LIBROS</div>
+            <div className="inv-summary-value">{totalLibros}</div>
+          </div>
+
+          <div className="inv-summary-card">
+            <div className="inv-summary-title">PRESTADOS</div>
+            <div className="inv-summary-value">{prestados}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== CONTROLES SUPERIORES ===== */}
+      <div className="inv-controls">
+        {/* buscador */}
+        <div className="inv-search-box">
+          <Search className="icono" size={18} style={{ position: "absolute", margin: "12px" }} />
+          <input type="text" placeholder="Buscar..." style={{ paddingLeft: "40px" }} />
+        </div>
+
+        {/* select de categoría */}
+        <select className="inv-select">
+          <option value="">Categoría...</option>
+          <option value="Novela">Novela</option>
+          <option value="Historia">Historia</option>
+          <option value="Ciencia">Ciencia</option>
+          <option value="Literatura">Literatura</option>
+          <option value="Libro de Texto">Libro de Texto</option>
+        </select>
+
+        {/* botón agregar */}
+        <button className="btn-add" onClick={() => abrirModal("agregar")}>
           <PlusCircle size={18} /> Agregar Nuevo Libro
         </button>
       </div>
 
-      <table className="tabla-biblioteca">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Categoría</th>
-            <th>Autor</th>
-            <th>Cantidad</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {libros.map((libro) => (
-            <tr key={libro.id}>
-              <td>{libro.id}</td>
-              <td>{libro.titulo}</td>
-              <td>{libro.categoria}</td>
-              <td>{libro.autor}</td>
-              <td>{libro.cantidad}</td>
-              <td className="acciones">
-                <Eye className="ver" size={18} onClick={() => abrirModal("ver", libro)} title="Ver" />
-                <Pencil className="editar" size={18} onClick={() => abrirModal("editar", libro)} title="Editar" />
-                <Trash2 className="eliminar" size={18} onClick={() => abrirModal("eliminar", libro)} title="Eliminar" />
-              </td>
+      {/* ===== TABLA ===== */}
+      <div className="inv-table-wrapper">
+        <table className="inv-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Categoría</th>
+              <th>Autor</th>
+              <th>Cantidad</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      {/* ============ MODALES ============ */}
+          <tbody>
+            {/* si no hay libros, mostrar mensaje */}
+            {libros.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">
+                  No hay libros registrados.
+                </td>
+              </tr>
+            ) : (
+              // recorrer libros y mostrarlos
+              libros.map((libro) => (
+                <tr key={libro.id}>
+                  <td>{libro.id}</td>
+                  <td>{libro.titulo}</td>
+                  <td>{libro.categoria}</td>
+                  <td>{libro.autor}</td>
+                  <td>{libro.cantidad}</td>
+                  <td className="inv-actions">
+                    {/* botón ver */}
+                    <button className="act act-view" onClick={() => abrirModal("ver", libro)}>
+                      <Eye size={18} />
+                    </button>
+                    {/* botón editar */}
+                    <button className="act act-edit" onClick={() => abrirModal("editar", libro)}>
+                      <Pencil size={18} />
+                    </button>
+                    {/* botón eliminar */}
+                    <button className="act act-del" onClick={() => abrirModal("eliminar", libro)}>
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* 🔍 MODAL VER */}
-      {modal === "ver" && (
+      {/* ===== MODALES ===== */}
+
+      {/* modal ver detalles */}
+      {modal === "ver" && seleccion && (
         <div className="modal-fondo">
           <div className="modal-contenido">
             <h3>📖 Detalles del Libro</h3>
+
             <p><strong>Título:</strong> {seleccion.titulo}</p>
             <p><strong>Categoría:</strong> {seleccion.categoria}</p>
             <p><strong>Autor:</strong> {seleccion.autor}</p>
             <p><strong>Cantidad:</strong> {seleccion.cantidad}</p>
+
             <button className="btn-cerrar" onClick={cerrarModal}>Cerrar</button>
           </div>
         </div>
       )}
 
-      {/* ✏️ MODAL EDITAR */}
-      {modal === "editar" && (
+      {/* modal editar */}
+      {modal === "editar" && seleccion && (
         <div className="modal-fondo">
           <div className="modal-contenido">
             <h3>✏️ Editar Libro</h3>
+
             <form className="form-modal">
               <input type="text" defaultValue={seleccion.titulo} />
               <input type="text" defaultValue={seleccion.autor} />
               <input type="number" defaultValue={seleccion.cantidad} />
+
               <button className="btn-guardar">Guardar Cambios</button>
             </form>
+
             <button className="btn-cerrar" onClick={cerrarModal}>Cancelar</button>
           </div>
         </div>
       )}
 
-      {/* 🗑️ MODAL ELIMINAR */}
-      {modal === "eliminar" && (
+      {/* modal eliminar */}
+      {modal === "eliminar" && seleccion && (
         <div className="modal-fondo">
           <div className="modal-contenido modal-eliminar">
+            {/* icono eliminar */}
             <XCircle size={60} className="icono-eliminar" />
+
             <h3>¿Eliminar libro?</h3>
             <p>Esta acción no se puede deshacer.</p>
+
             <div className="botones-eliminar">
               <button className="btn-cancelar" onClick={cerrarModal}>Cancelar</button>
               <button className="btn-confirmar" onClick={eliminarLibro}>Eliminar</button>
@@ -135,21 +193,25 @@ const Biblioteca = () => {
         </div>
       )}
 
-      {/* ➕ MODAL AGREGAR */}
+      {/* modal agregar */}
       {modal === "agregar" && (
         <div className="modal-fondo">
           <div className="modal-contenido">
             <h3>➕ Agregar Libro</h3>
+
             <form className="form-modal">
               <input type="text" placeholder="Título..." />
               <input type="text" placeholder="Autor..." />
               <input type="number" placeholder="Cantidad..." />
+
               <button className="btn-guardar">Agregar</button>
             </form>
+
             <button className="btn-cerrar" onClick={cerrarModal}>Cancelar</button>
           </div>
         </div>
       )}
+
     </div>
   );
 };
