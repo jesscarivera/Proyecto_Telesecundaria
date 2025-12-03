@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar } from "../components/Sidedar";
 import { SchoolHeader } from "../components/SchoolHeader";
 import { Package, Book, AlertTriangle, CheckCircle } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import "../components/Dashboard.css";
+import RecentNotices from "../components/RecentNotices";
+import Events from "../components/Events";
 
-// tarjeta de estadísticas
 const StatCard = ({ title, value, icon: Icon, color, subtext }) => (
   <div className="stat-card">
     <div className="stat-info">
@@ -19,75 +20,158 @@ const StatCard = ({ title, value, icon: Icon, color, subtext }) => (
   </div>
 );
 
-export default function Dashboard({ inventory = [], library = [], notices = [], events = [] }) {
-  const [view, setView] = useState("dashboard"); // pantalla actual
+export default function Dashboard() {
+  const [inventory, setInventory] = useState([]);
+  const [library, setLibrary] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [events, setEvents] = useState([]);
 
-  // asegurar que los datos sean arrays
+  const dynamicColors = [
+    "#6f42c1",
+    "#28a745",
+    "#fd7e14",
+    "#17a2b8",
+    "#dc3545",
+    "#ffc107",
+    "#20c997",
+    "#6610f2"
+  ];
+
+  const colorMap = {};
+
+  const getColorForCategory = (name) => {
+    if (!colorMap[name]) {
+      colorMap[name] = dynamicColors[Object.keys(colorMap).length % dynamicColors.length];
+    }
+    return colorMap[name];
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const inv = await fetch("http://localhost:3000/api/inventory/get");
+        const lib = await fetch("http://localhost:3000/api/library/get");
+
+        const noti = await fetch("http://localhost:3000/api/notices");
+
+        const evt = await fetch("http://localhost:3000/api/events/get");
+
+        setInventory(await inv.json());
+        setLibrary(await lib.json());
+        setNotices(await noti.json());
+
+        const evtJson = await evt.json();
+        const eventosRaw = evtJson.events || [];
+
+        const eventosAdaptados = eventosRaw.map((e) => {
+          const fecha = new Date(e.date);
+          return {
+            id: e.id,
+            name: e.name,
+            descripcion: e.description,
+            date: e.date,
+            fechaSolo: fecha.toISOString().slice(0, 10),
+            horaSolo: fecha.toISOString().slice(11, 16)
+          };
+        });
+
+        setEvents(eventosAdaptados);
+      } catch (error) {
+        console.error("Error cargando datos del backend:", error);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  const [view, setView] = useState("dashboard");
+
   const safeInventory = Array.isArray(inventory) ? inventory : [];
   const safeLibrary = Array.isArray(library) ? library : [];
   const safeNotices = Array.isArray(notices) ? notices : [];
-  const safeEvents = Array.isArray(events) ? events : [];
-
-  // cálculo de estadísticas
-  const totalItems = safeInventory.reduce((acc, item) => acc + (item.quantity || 0), 0);
-  const lowStock = safeInventory.filter(i => (i.quantity || 0) < 5).length;
-  const totalBooks = safeLibrary.length;
-  const borrowedBooks = safeLibrary.filter(b => !b.available).length;
-
-  // datos para gráficas
-  const categoryData = safeInventory.reduce((acc, item) => {
-    const existing = acc.find(x => x.name === item.category);
-    if (existing) existing.value += item.quantity || 0;
-    else acc.push({ name: item.category || "Sin categoría", value: item.quantity || 0 });
-    return acc;
-  }, []);
-
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
-  const bookStatusData = [
-    { name: "Disponible", value: totalBooks - borrowedBooks },
-    { name: "Prestado", value: borrowedBooks }
-  ];
-
-  // últimos avisos y próximos eventos
-  const recentNotices = [...safeNotices].reverse().slice(0, 3);
-  const upcomingEvents = [...safeEvents]
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .slice(0, 3);
 
   return (
     <div className="dashboard-wrapper">
-      {/* sidebar */}
-      <Sidebar currentView={view} setView={setView} isOpen={true} onLogout={() => alert("Salir")} />
+      <Sidebar
+        currentView={view}
+        setView={setView}
+        isOpen={true}
+        onLogout={() => alert("Salir")}
+      />
 
       <div className="dashboard-content">
-        {/* header */}
         <SchoolHeader />
 
-        {/* tarjetas de estadísticas */}
         <div className="stats-grid">
-          <StatCard title="Total Artículos" value={totalItems} icon={Package} color="blue" subtext="En inventario general" />
-          <StatCard title="Stock Bajo" value={lowStock} icon={AlertTriangle} color="orange" subtext="Items con < 5 unidades" />
-          <StatCard title="Libros Total" value={totalBooks} icon={Book} color="purple" subtext="En biblioteca" />
-          <StatCard title="Préstamos Activos" value={borrowedBooks} icon={CheckCircle} color="green" subtext="Libros fuera" />
+          <StatCard
+            title="Total Artículos"
+            value={safeInventory.reduce((acc, item) => acc + (item.quantity || 0), 0)}
+            icon={Package}
+            color="blue"
+            subtext="En inventario general"
+          />
+
+          <StatCard
+            title="Stock Bajo"
+            value={safeInventory.filter((i) => (i.quantity || 0) < 5).length}
+            icon={AlertTriangle}
+            color="orange"
+            subtext="Items con < 5 unidades"
+          />
+
+          <StatCard
+            title="Libros Total"
+            value={safeLibrary.reduce((acc, b) => acc + (b.copies_availables || 0), 0)}
+            icon={Book}
+            color="purple"
+            subtext="Ejemplares en biblioteca"
+          />
+
+          <StatCard
+            title="Préstamos Activos"
+            value={safeLibrary.reduce((acc, b) =>
+              acc + Math.max((b.copies_total || 0) - (b.copies_availables || 0), 0)
+            , 0)}
+            icon={CheckCircle}
+            color="green"
+            subtext="Libros fuera"
+          />
         </div>
 
-        {/* gráficas */}
         <div className="charts-grid">
           <div className="chart-card">
             <h3>Distribución por Categoría</h3>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={categoryData}
+                  data={safeInventory.reduce((acc, item) => {
+                    const categoria =
+                      item.category?.name || item.category || "Sin categoría";
+
+                    const existing = acc.find((x) => x.name === categoria);
+                    if (existing) existing.value += item.quantity || 0;
+                    else acc.push({ name: categoria, value: item.quantity || 0 });
+
+                    return acc;
+                  }, [])}
                   dataKey="value"
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
                 >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
+                  {safeInventory.map((item, index) => {
+                    const categoria =
+                      item.category?.name || item.category || "Sin categoría";
+                    return (
+                      <Cell
+                        key={index}
+                        fill={getColorForCategory(categoria)}
+                      />
+                    );
+                  })}
                 </Pie>
                 <Tooltip />
               </PieChart>
@@ -97,60 +181,47 @@ export default function Dashboard({ inventory = [], library = [], notices = [], 
           <div className="chart-card">
             <h3>Disponibilidad Biblioteca</h3>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bookStatusData}>
+              <BarChart
+                data={[
+                  {
+                    name: "Disponible",
+                    value: safeLibrary.filter(
+                      (b) => (b.copies_availables || 0) > 0
+                    ).length
+                  },
+                  {
+                    name: "Prestado",
+                    value: safeLibrary.reduce(
+                      (acc, b) =>
+                        acc +
+                        Math.max(
+                          (b.copies_total || 0) - (b.copies_availables || 0),
+                          0
+                        ),
+                      0
+                    )
+                  }
+                ]}
+              >
                 <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="value" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* avisos y eventos */}
         <div className="notices-events-grid">
-          <div className="notices-card">
-            <div className="card-header"><h3>Avisos Recientes</h3></div>
-            {recentNotices.length === 0 ? (
-              <p className="empty-text">No hay avisos recientes.</p>
-            ) : (
-              recentNotices.map((notice) => (
-                <div key={notice.id} className="notice-item">
-                  <div className={`notice-type ${notice.type.toLowerCase()}`}></div>
-                  <div>
-                    <h4>{notice.title}</h4>
-                    <p>{notice.content}</p>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+          <RecentNotices notices={safeNotices} />
 
-          <div className="events-card">
-            <div className="card-header"><h3>Próximos Eventos</h3></div>
-            {upcomingEvents.length === 0 ? (
-              <p className="empty-text">Sin eventos próximos.</p>
-            ) : (
-              upcomingEvents.map((event) => {
-                const evtDate = new Date(event.date);
-                return (
-                  <div key={event.id} className="event-item">
-                    <div className="event-date">
-                      <span>{evtDate.getDate()}</span>
-                      <small>{evtDate.toLocaleDateString("es-MX", { month: "short" }).slice(0, 3)}</small>
-                    </div>
-                    <div className="event-info">
-                      <h4>{event.title}</h4>
-                      <p>{event.time} | {event.location}</p>
-                    </div>
-                  </div>
-                );
-              })
-            )}
+          <div className="card dashboard-card">
+            <Events />
           </div>
         </div>
+
       </div>
     </div>
   );

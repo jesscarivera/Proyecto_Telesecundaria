@@ -1,6 +1,5 @@
-/* ---- Contenedor principal ajustado al sidebar ---- */
-.inventory-container {
-  margin-left: 260px; /* ancho del sidebar */
+.biblio-container {
+  margin-left: 260px;
   padding: 30px;
   background: #f5f6fa;
   min-height: 100vh;
@@ -8,76 +7,48 @@
   transition: margin-left 0.3s ease;
 }
 
-/* ---- Títulos ---- */
-.inv-title {
+.biblio-container .biblio-title {
   font-size: 36px;
   font-weight: 800;
   color: #2c2c2c;
 }
 
-.inv-subtitle {
+.biblio-container .biblio-subtitle {
   margin-top: 4px;
   color: #6b6b6b;
   font-size: 14px;
 }
 
-/* ---- Header ---- */
-.inv-header {
+.biblio-container .biblio-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* ---- Tarjetas de resumen ---- */
-.inv-summary-boxes {
-  display: flex;
-  gap: 15px;
-}
-
-.inv-summary-card {
-  background: white;
-  padding: 14px 20px;
-  border-radius: 12px;
-  min-width: 140px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.inv-summary-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-.inv-summary-value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #2c2c2c;
-}
-
-/* ---- Botón de reporte ---- */
-.btn-report {
-  background: #ececf1;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
+.biblio-container .btn-add {
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: 0.2s;
+  gap: 8px;
+  background: linear-gradient(90deg, #7b00ff, #b400ff);
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(123, 0, 255, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-report:hover {
-  background: #dedee4;
+.biblio-container .btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(123, 0, 255, 0.4);
 }
 
-/* ---- Controles (buscador, filtros, agregar) ---- */
-.inv-controls {
+.biblio-container .biblio-controls {
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
   margin-top: 25px;
   background: white;
   padding: 18px;
@@ -86,45 +57,7 @@
   align-items: center;
 }
 
-/* Buscador */
-.inv-search-box {
-  flex: 1;
-}
-
-.inv-search-box input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-}
-
-/* Select */
-.inv-select {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-}
-
-/* Botón Agregar */
-.btn-add {
-  background: linear-gradient(90deg, #6f2cff, #7e3ff2);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-.btn-add:hover {
-  background: linear-gradient(90deg, #5b22d6, #6d30dd);
-}
-
-/* ---- Tabla ---- */
-.inv-table-wrapper {
+.biblio-container .biblio-table-wrapper {
   margin-top: 25px;
   background: white;
   padding: 0;
@@ -133,16 +66,16 @@
   border: 1px solid #e6e6e6;
 }
 
-.inv-table {
+.biblio-container .biblio-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.inv-table thead {
+.biblio-container .biblio-table thead {
   background: #f5f7fb;
 }
 
-.inv-table th {
+.biblio-container .biblio-table th {
   text-align: left;
   padding: 18px;
   font-size: 13px;
@@ -150,29 +83,19 @@
   border-bottom: 1px solid #eee;
 }
 
-.inv-table td {
+.biblio-container .biblio-table td {
   padding: 18px;
   font-size: 15px;
   color: #333;
   border-bottom: 1px solid #f1f1f1;
 }
 
-/* ---- Etiquetas pequeñas ---- */
-.badge {
-  background: #e9e7ff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-  color: #6a41e2;
-}
-
-/* ---- Botones de acciones ---- */
-.inv-actions {
+.biblio-container .biblio-actions {
   display: flex;
   gap: 10px;
 }
 
-.act {
+.biblio-container .act {
   border: none;
   padding: 6px 8px;
   background: transparent;
@@ -180,34 +103,190 @@
   font-size: 18px;
 }
 
-.act-edit:hover {
+.biblio-container .act-edit:hover {
   color: #5b29ff;
 }
 
-.act-del:hover {
+.biblio-container .act-del:hover {
   color: #d72525;
 }
 
-.no-data {
+.biblio-container .no-data {
   padding: 40px;
   text-align: center;
   color: #777;
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 1200px) {
-  .inventory-container {
-    margin-left: 220px;
-  }
+
+.biblio-container .modal-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.biblio-container .modal-contenido {
+  width: 480px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  animation: modalPop 0.25s ease;
+  overflow: hidden;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.biblio-container .modal-header {
+  background: #7600d8;
+  padding: 18px 22px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.biblio-container .modal-header .cerrar-x {
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+}
+
+.biblio-container .modal-body {
+  padding: 25px 30px;
+  color: #333;
+  font-size: 15px;
+}
+
+.biblio-container .form-modal input,
+.biblio-container .form-modal select {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background: #fafafa;
+  font-size: 14px;
+}
+
+.biblio-container .btns-modal {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 30px;
+  gap: 12px;
+}
+
+.biblio-container .btn-cancelar,
+.biblio-container .btn-cerrar {
+  background: #dcdcdc;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  color: #333;
+  transition: 0.2s;
+}
+
+.biblio-container .btn-cancelar:hover,
+.biblio-container .btn-cerrar:hover {
+  background: #c6c6c6;
+}
+
+.biblio-container .btn-guardar {
+  background: #8d00ff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.biblio-container .btn-guardar:hover {
+  background: #6f00cc;
+}
+
+.biblio-container .modal-eliminar .modal-body {
+  text-align: center;
+}
+
+.biblio-container .warning-icon {
+  font-size: 62px;
+  color: #ffb000;
+  margin-bottom: 10px;
+}
+
+.biblio-container .botones-eliminar {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.biblio-container .btn-confirmar {
+  background: #ff2424;
+  color: white;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.biblio-container .btn-confirmar:hover {
+  background: #d90000;
 }
 
 @media (max-width: 768px) {
-  .inventory-container {
+  .biblio-container {
     margin-left: 0;
     padding: 20px;
   }
 
-  .inv-summary-boxes {
-    flex-direction: column;
+  .biblio-container .modal-contenido {
+    width: 90%;
   }
+}
+
+.biblio-container .search-add-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  gap: 15px;
+}
+
+.biblio-container .search-input {
+  flex: 1.8;                     
+  padding: 12px 16px;           
+  border-radius: 12px;           
+  border: 1px solid #d3c7ff;     
+  background: #faf7ff;           
+  font-size: 15px;
+  transition: 0.25s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+.biblio-container .search-input:focus {
+  outline: none;
+  border-color: #8d00ff;         
+  box-shadow: 0 0 6px rgba(141, 0, 255, 0.4);
+  background: #ffffff;
 }

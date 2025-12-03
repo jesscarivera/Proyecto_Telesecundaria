@@ -4,28 +4,61 @@ const Student = require('./Students');
 const Book = require('./Library');
 
 const Loan = sequelize.define('Loan', {
+
+  student_enrollment: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: Student,
+      key: 'enrollment'
+    }
+  },
+
+  book_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Book,
+      key: 'id'
+    }
+  },
+
   loan_date: {
     type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
+    allowNull: false
   },
+
+  due_date: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+
   return_date: {
     type: DataTypes.DATE,
     allowNull: true
   },
+
   status: {
-    type: DataTypes.ENUM('borrowed', 'returned'),
+    type: DataTypes.ENUM('borrowed', 'returned', 'Prestado', 'Devuelto'),
     allowNull: false,
-    defaultValue: 'borrowed'
+    defaultValue: 'Prestado'
   }
+
 }, {
   tableName: 'Loans',
   timestamps: true
 });
 
 // Relaciones
-Student.hasMany(Loan, { foreignKey: 'student_id' });
-Loan.belongsTo(Student, { foreignKey: 'student_id' });
+Student.hasMany(Loan, {
+  foreignKey: 'student_enrollment',
+  sourceKey: 'enrollment'
+});
+
+Loan.belongsTo(Student, {
+  foreignKey: 'student_enrollment',
+  targetKey: 'enrollment'
+});
 
 Book.hasMany(Loan, { foreignKey: 'book_id' });
 Loan.belongsTo(Book, { foreignKey: 'book_id' });

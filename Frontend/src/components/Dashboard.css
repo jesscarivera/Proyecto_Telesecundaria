@@ -12,7 +12,6 @@ html, body {
   font-family: sans-serif;
 }
 
-/* layout general */
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
@@ -20,7 +19,6 @@ html, body {
   overflow: hidden;
 }
 
-/* sidebar fija */
 .dashboard-wrapper > .sidebar {
   width: 260px;
   flex-shrink: 0;
@@ -35,7 +33,6 @@ html, body {
   overflow-y: auto;
 }
 
-/* contenido principal */
 .dashboard-content {
   margin-left: 260px;
   flex: 1;
@@ -48,7 +45,6 @@ html, body {
   overflow-y: auto;
 }
 
-/* header */
 .school-header {
   width: 100%;
   background-color: #ffffff;
@@ -70,7 +66,6 @@ html, body {
   width: 100%;
 }
 
-/* left */
 .header-left h3 {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -83,7 +78,6 @@ html, body {
   color: #374151;
 }
 
-/* center */
 .header-center {
   flex: 1;
   text-align: center;
@@ -98,13 +92,11 @@ html, body {
   margin-top: 0.25rem;
 }
 
-/* right */
 .header-right {
   text-align: right;
   opacity: 0.85;
 }
 
-/* barra decorativa */
 .header-bar {
   width: 100%;
   height: 4px;
@@ -113,14 +105,12 @@ html, body {
   border-radius: 2px;
 }
 
-/* contenedor principal */
 .dashboard-container {
   width: 100%;
   max-width: 1400px;
   margin: auto;
 }
 
-/* estadísticas */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -139,7 +129,6 @@ html, body {
   align-items: center;
 }
 
-/* charts */
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -158,7 +147,6 @@ html, body {
   flex-direction: column;
 }
 
-/* notices y eventos */
 .notices-events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -173,7 +161,84 @@ html, body {
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-/* responsive */
+.event-card-custom {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease;
+}
+
+.event-card-custom:last-child {
+  border-bottom: none;
+}
+
+.event-card-custom:hover {
+  background: #fafafa;
+  border-radius: 10px;
+  padding-left: 6px;
+}
+
+.event-date-custom {
+  min-width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  background: #f3e8ff;
+  color: #5b21b6;
+  text-align: center;
+  padding-top: 6px;
+  font-weight: bold;
+  line-height: 1.1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.event-date-custom .day {
+  font-size: 18px;
+}
+
+.event-date-custom .month {
+  font-size: 12px;
+}
+
+.event-info-custom {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-title-custom {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
+}
+
+.event-detail i {
+  margin-right: 6px;
+}
+
+.btn-full-calendar {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #c3c3c3;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-full-calendar:hover {
+  background: #f0f0f0;
+}
+
 @media (max-width: 1200px) {
   .dashboard-wrapper > .sidebar {
     width: 220px;
@@ -207,66 +272,4 @@ html, body {
   .charts-grid, .notices-events-grid, .stats-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* tarjetas del dashboard */
-.dashboard-cards, .cards-container, .dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-.dashboard-card, .card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dashboard-card:hover, .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 25px rgba(0,0,0,0.12);
-}
-
-/* iconos dentro de las tarjetas */
-.dashboard-card .icon, .card .icon, .dashboard-icon {
-  width: 55px;
-  height: 55px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  color: white;
-}
-
-/* colores de los iconos */
-.icon.blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.icon.purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
-.icon.green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-.icon.orange { background: linear-gradient(135deg, #f7971e, #ffd200); }
-.icon.red { background: linear-gradient(135deg, #ff758c, #ff7eb3); }
-
-/* texto dentro de la tarjeta */
-.dashboard-card .info, .card .info {
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard-card h3, .card h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #333;
-}
-
-.dashboard-card p, .card p {
-  margin: 5px 0 0;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #111;
 }

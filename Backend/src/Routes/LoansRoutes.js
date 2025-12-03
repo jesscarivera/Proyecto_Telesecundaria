@@ -1,9 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const LoanController = require('../Controllers/LoansController');
+const LoansController = require("../Controllers/LoansController");
 
-router.post('/add', LoanController.createLoan);
-router.get('/get', LoanController.getLoans);
-router.put('/return/:id', LoanController.returnLoan);
+router.get("/get", LoansController.get);
+router.post("/add", LoansController.add);
+router.put("/update/:id", LoansController.update);
+router.put("/return/:id", LoansController.marcarDevuelto);
+router.delete("/delete/:id", LoansController.delete);
 
 module.exports = router;

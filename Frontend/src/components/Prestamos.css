@@ -1,0 +1,119 @@
+.inventory-container {
+  padding: 20px;
+}
+
+.inv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inv-title {
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inv-subtitle {
+  color: #666;
+  margin-top: -5px;
+}
+
+.btn-add {
+  background: #007bff;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.inv-table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inv-table th,
+.inv-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 18px 0;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-transform: capitalize;
+  color: white;
+}
+
+.badge-green {
+  background: #28a745;
+}
+
+.badge-yellow {
+  background: #ffc107;
+  color: #000;
+}
+
+.badge-red {
+  background: #dc3545;
+}
+
+.row-red {
+  background: #ffe5e5 !important;
+}
+
+.row-yellow {
+  background: #fff8d5 !important;
+}
+
+.inv-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.act {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.act:hover {
+  background: rgba(0,0,0,0.04);
+}
+
+.act-edit svg,
+.act-del svg,
+.act-green svg {
+  stroke: #000;
+}
+
+.act-green {
+  background: transparent;
+}
+
+.alert-bell {
+  color: #d9534f;
+}

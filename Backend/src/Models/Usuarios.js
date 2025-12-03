@@ -18,7 +18,9 @@ const Usuario = sequelize.define('Usuario', {
   correo: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true, 
+    unique: {
+      name: "unique_correo"  
+    },
     validate: {
       isEmail: true 
     }
@@ -38,8 +40,8 @@ const Usuario = sequelize.define('Usuario', {
     defaultValue: 'activo'
   }
 }, {
-  tableName: 'usuarios', 
-  timestamps: true 
+  tableName: 'usuarios',
+  timestamps: true
 });
 
 module.exports = Usuario;

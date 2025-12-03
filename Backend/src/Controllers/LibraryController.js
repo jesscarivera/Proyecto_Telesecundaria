@@ -2,7 +2,7 @@ const Books = require('../Models/Library');
 
 // Crear libro
 const agregarLibro = async (req, res) => {
-  const { title, author, year_publication, genre, editorial, copies_availables } = req.body;
+  const { title, author, year_publication, genre, editorial, copies_availables, copies_total } = req.body;
 
   try {
     // Verificar si ya existe un libro con el mismo título y autor
@@ -18,7 +18,8 @@ const agregarLibro = async (req, res) => {
       year_publication,
       genre,
       editorial,
-      copies_availables
+      copies_availables,
+      copies_total
     });
 
     res.status(201).json({
@@ -35,7 +36,16 @@ const agregarLibro = async (req, res) => {
 const obtenerLibros = async (req, res) => {
   try {
     const libros = await Books.findAll({
-      attributes: ['id', 'title', 'author', 'year_publication', 'genre', 'editorial', 'copies_availables']
+      attributes: [
+        'id',
+        'title',
+        'author',
+        'year_publication',
+        'genre',
+        'editorial',
+        'copies_availables',
+        'copies_total'
+      ]
     });
     res.status(200).json(libros);
   } catch (error) {
@@ -51,7 +61,16 @@ const obtenerLibro = async (req, res) => {
   try {
     const libro = await Books.findOne({
       where: { id },
-      attributes: ['id', 'title', 'author', 'year_publication', 'genre', 'editorial', 'copies_availables']
+      attributes: [
+        'id',
+        'title',
+        'author',
+        'year_publication',
+        'genre',
+        'editorial',
+        'copies_availables',
+        'copies_total'
+      ]
     });
 
     if (!libro) {
@@ -68,7 +87,15 @@ const obtenerLibro = async (req, res) => {
 // Editar libro por ID
 const editarLibro = async (req, res) => {
   const { id } = req.params;
-  const { title, author, year_publication, genre, editorial, copies_availables } = req.body;
+  const {
+    title,
+    author,
+    year_publication,
+    genre,
+    editorial,
+    copies_availables,
+    copies_total
+  } = req.body;
 
   try {
     const libro = await Books.findOne({ where: { id } });
@@ -83,7 +110,8 @@ const editarLibro = async (req, res) => {
       year_publication: year_publication || libro.year_publication,
       genre: genre || libro.genre,
       editorial: editorial || libro.editorial,
-      copies_availables: copies_availables || libro.copies_availables
+      copies_availables: copies_availables ?? libro.copies_availables,
+      copies_total: copies_total ?? libro.copies_total
     });
 
     res.status(200).json({

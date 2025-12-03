@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Package, BookOpen, Settings, LogOut, GraduationCap } from 'lucide-react';
+import { LayoutDashboard, Package, BookOpen, Settings, LogOut, GraduationCap, ClipboardList } from 'lucide-react';
 import './Sidebar.css';
 import { useNavigate } from "react-router-dom";
 
@@ -54,11 +54,20 @@ export const Sidebar = ({ onLogout }) => {
           <span>Alumnos</span>
         </div>
 
+        {/* Préstamos */}
+        <div
+          onClick={() => navigate('/prestamos')}
+          className={navClass('prestamos')}
+        >
+          <ClipboardList size={20} />
+          <span>Préstamos</span>
+        </div>
+
         <div className="sidebar-divider"></div>
 
         {/* Configuración */}
         <div
-          onClick={() => navigate('/configuracion')}
+          onClick={() => navigate('/settings')}
           className={navClass('settings')}
         >
           <Settings size={20} />

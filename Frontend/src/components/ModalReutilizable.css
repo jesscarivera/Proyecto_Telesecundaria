@@ -1,0 +1,146 @@
+.mr-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.mr-modal {
+  background: white;
+  border-radius: 14px;
+  width: 480px;
+  max-width: 95%;
+  padding-bottom: 15px;
+  box-shadow: 0px 4px 25px rgba(0,0,0,0.20);
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.93); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.mr-header {
+  background: #6a00a8;
+  padding: 18px 20px;
+  border-radius: 14px 14px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mr-header h2 {
+  color: white;
+  font-size: 22px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.mr-close {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.mr-body {
+  padding: 25px 30px;
+  font-size: 15px;
+  color: #123;
+}
+
+.mr-view p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.mr-label {
+  color: #0d1b2a;
+  font-weight: bold;
+}
+
+.mr-form label {
+  font-size: 17px;
+  color: #0d1b2a;
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.mr-form input,
+.mr-form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.mr-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.mr-btn-cancel {
+  background: #d0d0d0;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mr-btn-submit {
+  background: #8000ff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mr-btn-delete {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mr-icon-warning {
+  color: #ffcc00;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.mr-delete h3 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.mr-delete p {
+  text-align: center;
+  font-size: 15px;
+}
+
+.mr-overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999 !important;
+}

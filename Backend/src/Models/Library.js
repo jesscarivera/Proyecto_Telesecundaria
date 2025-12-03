@@ -22,6 +22,13 @@ const Books = sequelize.define('Books', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  copies_total: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+    comment: "Número total de copias del libro"
+  },
+
   copies_availables: {
     type: DataTypes.INTEGER,
     allowNull: false,

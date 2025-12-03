@@ -1,32 +1,44 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../db');
 
-const Student = sequelize.define('Students', {
+const Student = sequelize.define('Student', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+
   name: {
     type: DataTypes.STRING,
     allowNull: false
   },
+
   Last_Name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-   enrollment: {
+
+  enrollment: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true   // ← IMPORTANTE
   },
+
   age: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: true
   },
+
   grade: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true
   },
+
   group: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: true
   }
+
 }, {
   tableName: 'Students',
   timestamps: true

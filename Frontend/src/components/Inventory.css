@@ -1,186 +1,228 @@
-/* ---- Contenedor principal ajustado al sidebar ---- */
-.inventory-container {
-  margin-left: 260px; /* ancho de la sidebar */
-  padding: 30px;
-  background: #f5f6fa;
-  min-height: 100vh;
-  font-family: "Segoe UI", sans-serif;
-  transition: margin-left 0.3s ease;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn .2s ease;
 }
 
-/* ---- Títulos ---- */
-.inv-title {
-  font-size: 36px;
-  font-weight: 800;
-  color: #2c2c2c;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.inv-subtitle {
-  margin-top: 4px;
-  color: #6b6b6b;
-  font-size: 14px;
+.modal-box {
+  background: #fff;
+  width: 480px;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  animation: popIn .25s ease;
 }
 
-/* ---- Encabezado general ---- */
-.inv-header {
+.modal-box.edit {
+  width: 600px;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
 
-/* ---- Botón de reporte ---- */
-.btn-report {
-  background: #ececf1;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: 0.2s;
+.modal-top h3 {
+  font-size: 1.3rem;
+  margin: 0;
+  font-weight: bold;
 }
 
-.btn-report:hover {
-  background: #dedee4;
-}
-
-/* ---- Controles (buscador, filtros, agregar) ---- */
-.inv-controls {
-  display: flex;
-  gap: 15px;
-  margin-top: 25px;
-  background: white;
+.purple {
+  background: #4b008f;
   padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  align-items: center;
-}
-
-/* Buscador */
-.inv-search-box {
-  flex: 1;
-}
-
-.inv-search-box input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-}
-
-/* Select */
-.inv-select {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fafafa;
-}
-
-/* Botón agregar */
-.btn-add {
-  background: linear-gradient(90deg, #6f2cff, #7e3ff2);
+  border-radius: 14px 14px 0 0;
   color: white;
+}
+
+.modal-close {
+  background: none;
   border: none;
-  padding: 12px 20px;
-  border-radius: 9px;
+  font-size: 20px;
   cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
+  color: #555;
 }
 
-.btn-add:hover {
-  background: linear-gradient(90deg, #5b22d6, #6d30dd);
+.modal-close:hover {
+  color: #b70000;
 }
 
-/* ---- Tabla ---- */
-.inv-table-wrapper {
-  margin-top: 25px;
-  background: white;
-  padding: 0;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid #e6e6e6;
+.modal-section p,
+.modal-row div {
+  margin-bottom: 8px;
 }
 
-.inv-table {
+.form-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
   width: 100%;
-  border-collapse: collapse;
-}
-
-.inv-table thead {
-  background: #f5f7fb;
-}
-
-.inv-table th {
-  text-align: left;
-  padding: 18px;
-  font-size: 13px;
-  color: #666;
-  border-bottom: 1px solid #eee;
-}
-
-.inv-table td {
-  padding: 18px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d4d4d4;
   font-size: 15px;
-  color: #333;
-  border-bottom: 1px solid #f1f1f1;
 }
 
-/* ---- Etiquetas pequeñas ---- */
-.badge {
-  background: #e9e7ff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-  color: #6a41e2;
-}
-
-/* ---- Botones de acción ---- */
-.inv-actions {
+.modal-buttons {
+  margin-top: 20px;
   display: flex;
+  justify-content: end;
   gap: 10px;
 }
 
-.act {
+.btn-cancel {
+  background: #ddd;
+  padding: 9px 18px;
+  border-radius: 7px;
   border: none;
-  padding: 6px 8px;
-  background: transparent;
   cursor: pointer;
-  font-size: 18px;
 }
 
-.act-edit:hover {
-  color: #5b29ff;
+.btn-save {
+  background: #d20000;
+  color: white;
+  padding: 9px 18px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
 }
 
-.act-del:hover {
-  color: #d72525;
+.btn-delete {
+  background: #ff2222;
+  color: white;
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
 }
 
-.no-data {
-  padding: 40px;
+.modal-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.modal-box.delete {
   text-align: center;
-  color: #777;
+  width: 420px;
 }
 
-/* ---- Ajustes para pantallas pequeñas ---- */
-@media (max-width: 1200px) {
-  .inventory-container {
-    margin-left: 220px;
-  }
+.delete-icon {
+  font-size: 45px;
+  color: #ff4444;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-  .inventory-container {
-    margin-left: 0; /* ya no se desplaza por la sidebar */
-    padding: 20px;
-  }
+.modal-card-large {
+  background: #fff;
+  width: 450px;
+  max-width: 95%;
+  margin: 10% auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.2s ease-in-out;
+}
 
-  .inv-summary-boxes {
-    flex-direction: column;
-  }
+.modal-card-large h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4b3ca4;
+  font-weight: 700;
+}
+
+.modal-card-large label {
+  font-weight: 600;
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.modal-card-large input,
+.modal-card-large select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-save {
+  padding: 10px 18px;
+  background: #4b3ca4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  padding: 10px 18px;
+  background: #c5c5c5;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #362d7a;
+}
+
+.btn-cancel:hover {
+  background: #bbbbbb;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  background: #4b3ca4;
+  color: white;
+  font-weight: 600;
 }
