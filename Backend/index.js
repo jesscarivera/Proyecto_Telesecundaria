@@ -10,7 +10,6 @@ const LibraryRoutes = require('./src/Routes/LibraryRoutes');
 const LoansRoutes = require('./src/Routes/LoansRoutes');
 const CategoryRoutes = require('./src/Routes/CategoryRoutes');
 const InventoryRoutes = require('./src/Routes/InventoryRoutes');
-const GroupsRoutes = require('./src/Routes/GroupsRoutes');
 const EventsRoutes = require('./src/Routes/EventsRoutes');
 const NoticesRoutes = require('./src/Routes/NoticesRoutes');
 
@@ -22,7 +21,6 @@ require('./src/Models/Library');
 require('./src/Models/Loans');
 require('./src/Models/Category');
 require('./src/Models/Inventory');
-require('./src/Models/Groups');
 require('./src/Models/Events');
 require('./src/Models/Notices');
 
@@ -43,7 +41,6 @@ app.use('/api/library', LibraryRoutes);
 app.use('/api/loans', LoansRoutes);
 app.use('/api/categories', CategoryRoutes);
 app.use('/api/inventory', InventoryRoutes);
-app.use('/api/groups', GroupsRoutes);
 app.use('/api/events', EventsRoutes);
 app.use('/api/notices', NoticesRoutes);
 

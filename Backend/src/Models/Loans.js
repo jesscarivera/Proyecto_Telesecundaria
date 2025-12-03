@@ -4,7 +4,11 @@ const Student = require('./Students');
 const Book = require('./Library');
 
 const Loan = sequelize.define('Loan', {
-
+id: {
+  type: DataTypes.INTEGER,
+  primaryKey: true,
+  autoIncrement: true
+},
   student_enrollment: {
     type: DataTypes.STRING,
     allowNull: false,
